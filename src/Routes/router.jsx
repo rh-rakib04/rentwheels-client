@@ -1,10 +1,13 @@
 import { createBrowserRouter } from "react-router";
 import MainLayout from "../Layout/MainLayout";
 import Home from "../pages/Home";
-import Browser from "../pages/Browser";
 import AddCar from "../pages/AddCar";
 import MyListings from "../pages/MyListings";
 import MyBookings from "../pages/MyBookings";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
+import BrowserCars from "../pages/BrowserCars";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -16,20 +19,40 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/browser",
-        element: <Browser />,
+        path: "/browser-cars",
+        element: <BrowserCars />,
       },
       {
         path: "/add-car",
-        element: <AddCar />,
+        element: (
+          <PrivateRoute>
+            <AddCar />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my-listings",
-        element: <MyListings />,
+        element: (
+          <PrivateRoute>
+            <MyListings />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my-bookings",
-        element: <MyBookings />,
+        element: (
+          <PrivateRoute>
+            <MyBookings />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/auth/login",
+        element: <Login />,
+      },
+      {
+        path: "/auth/register",
+        element: <Register />,
       },
     ],
   },
