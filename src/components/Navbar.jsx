@@ -30,9 +30,9 @@ const Navbar = () => {
         <FaBookmark />
         My Bookings
       </NavLink>
-      <NavLink className="p-3 flex gap-1 items-center" to="/browser-cars">
+      <NavLink className="p-3 flex gap-1 items-center" to="/browse-cars">
         <FaCarSide />
-        Browser Cars
+        Browse Cars
       </NavLink>
     </>
   );

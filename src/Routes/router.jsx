@@ -6,8 +6,8 @@ import MyListings from "../pages/MyListings";
 import MyBookings from "../pages/MyBookings";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
-import BrowserCars from "../pages/BrowserCars";
 import PrivateRoute from "./PrivateRoute";
+import BrowseCars from "../pages/BrowserCar";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +19,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/browser-cars",
-        element: <BrowserCars />,
+        path: "/browse-cars",
+        element: <BrowseCars />,
       },
       {
         path: "/add-car",

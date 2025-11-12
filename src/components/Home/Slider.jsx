@@ -55,7 +55,7 @@ const Slider = () => {
                   {slide.subtitle}
                 </p>
                 <Link
-                  to="/browser-cars"
+                  to="/browse-cars"
                   className="bg-yellow-400 text-slate-900 font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-yellow-500 transition-all duration-300"
                 >
                   {slide.button}

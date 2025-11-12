@@ -1,7 +1,7 @@
 import React from "react";
 
-const BrowserCars = () => {
+const BrowseCars = () => {
   return <div>BrowserCars</div>;
 };
 
-export default BrowserCars;
+export default BrowseCars;
