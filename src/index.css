@@ -6,3 +6,8 @@
   font-family: "Sora", sans-serif;
   font-optical-sizing: auto;
 }
+.active {
+  color: rgb(255, 185, 81);
+  text-decoration: underline;
+  font-size: medium;
+}

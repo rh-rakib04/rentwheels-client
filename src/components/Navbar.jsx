@@ -64,7 +64,7 @@ const Navbar = () => {
             {links}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">
+        <a className="btn btn-ghost text-xl text-yellow-500 ">
           <IoCarSportOutline />
           RentWheels
         </a>
@@ -110,7 +110,7 @@ const Navbar = () => {
               <li>
                 <button
                   onClick={signOutUser}
-                  className="btn btn-xs text-left bg-linear-to-r from-pink-500 to-red-500 text-white"
+                  className="btn btn-xs text-left bg-yellow-500 hover:bg-yellow-400 text-white"
                 >
                   <IoLogOut /> Logout
                 </button>
@@ -121,14 +121,14 @@ const Navbar = () => {
           <div>
             <Link
               to="/auth/login"
-              className="btn rounded-full border-gray-300  btn-sm bg-linear-to-r from-pink-500 to-red-500 text-white"
+              className="btn rounded-full border-gray-300  btn-sm bg-yellow-500 hover:bg-yellow-400 text-white"
             >
               {" "}
               <IoLogIn /> Login
             </Link>
             <Link
               to="/auth/register"
-              className="btn rounded-full border-gray-300  btn-sm bg-linear-to-r from-pink-500 to-red-500 text-white"
+              className="btn rounded-full border-gray-300  btn-sm bg-yellow-500 hover:bg-yellow-400 text-white"
             >
               {" "}
               <IoLogIn /> Register
