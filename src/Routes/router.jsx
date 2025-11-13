@@ -8,6 +8,7 @@ import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import PrivateRoute from "./PrivateRoute";
 import BrowseCars from "../pages/BrowserCar";
+import CarDetails from "../components/CarDetails";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <AddCar />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/cars/:id",
+        element: (
+          <PrivateRoute>
+            <CarDetails />
           </PrivateRoute>
         ),
       },

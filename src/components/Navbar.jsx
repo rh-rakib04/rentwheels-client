@@ -40,7 +40,7 @@ const Navbar = () => {
   return (
     <div
       className={`navbar shadow-sm transition-colors duration-300 ${
-        darkMode ? "bg-slate-900 text-white" : "bg-white text-gray-900"
+        darkMode ? "bg-black text-white" : "bg-white text-gray-900"
       }`}
     >
       <div className="navbar-start">

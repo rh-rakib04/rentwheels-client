@@ -7,18 +7,16 @@ const CarCard = ({ car }) => {
   const { _id, name, category, rentPrice, image, location } = car;
 
   return (
-    <div className="group relative bg-white dark:bg-slate-900 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-slate-200 dark:border-slate-700">
-      {/* Image */}
+    <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-md border border-slate-200 dark:border-slate-700">
       <figure className="overflow-hidden h-52">
         <img
           src={image}
           alt={name}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+          className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
         />
       </figure>
 
-      {/* Content */}
-      <div className="p-5 space-y-2">
+      <div className="p-5">
         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
           {name}
         </h2>
@@ -39,16 +37,13 @@ const CarCard = ({ car }) => {
           </span>
 
           <Link
-            to={`/car/${_id}`}
-            className="btn btn-sm rounded-full bg-yellow-500 hover:bg-yellow-400 text-white transition-all duration-300"
+            to={`/cars/${_id}`}
+            className="bg-yellow-400 hover:bg-yellow-500 text-black font-semibold px-4 py-2 rounded-xl mt-3"
           >
             View Details
           </Link>
         </div>
       </div>
-
-      {/* Hover overlay (optional aesthetic touch) */}
-      <div className="absolute inset-0 bg-yellow-400/0 group-hover:bg-yellow-400/5 transition-all duration-500"></div>
     </div>
   );
 };
