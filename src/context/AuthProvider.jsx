@@ -17,29 +17,34 @@ const AuthProvider = ({ children }) => {
   // --- Authentication state ---
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  // register
   const createUser = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
-
+  // log in
   const signInUser = (email, password) => {
     setLoading(true);
     return signInWithEmailAndPassword(auth, email, password);
   };
-
+  // google signin
   const signInWithGoogle = () => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider);
   };
-
+  // update user
   const updateUserProfile = (displayName, photoURL) => {
     return updateProfile(auth.currentUser, { displayName, photoURL });
   };
-
+  // logout
   const signOutUser = () => {
     setLoading(true);
     return signOut(auth);
+  };
+  // reset password
+  const passwordReset = (email) => {
+    setLoading(true);
+    return sendPasswordResetEmail(auth, email);
   };
 
   useEffect(() => {
@@ -50,7 +55,7 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  // --- Theme state ---
+  // --- Theme mode---
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -79,6 +84,7 @@ const AuthProvider = ({ children }) => {
     signInUser,
     signInWithGoogle,
     signOutUser,
+    passwordReset,
     user,
     loading,
     darkMode,

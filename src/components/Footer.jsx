@@ -28,17 +28,20 @@ const Footer = () => {
               </Link>
             </li>
             <li>
-              <Link to="/browse" className="hover:text-blue-400 transition">
+              <Link
+                to="/browse-cars"
+                className="hover:text-blue-400 transition"
+              >
                 Browse Cars
               </Link>
             </li>
             <li>
-              <Link to="/terms" className="hover:text-blue-400 transition">
+              <Link to="/" className="hover:text-blue-400 transition">
                 Terms & Conditions
               </Link>
             </li>
             <li>
-              <Link to="/privacy" className="hover:text-blue-400 transition">
+              <Link to="/" className="hover:text-blue-400 transition">
                 Privacy Policy
               </Link>
             </li>
@@ -51,13 +54,21 @@ const Footer = () => {
           <p className="text-gray-400">📧 support@rentwheels.com</p>
           <p className="text-gray-400 mb-4">📞 +880 1234 567890</p>
           <div className="flex items-center gap-4">
-            <a href="#" className="hover:text-blue-400 transition">
+            <a
+              href="https://www.facebook.com/rakibul.hossain.925602"
+              target="_blank"
+              className="hover:text-blue-400 transition"
+            >
               <FaFacebookF />
             </a>
             <a href="#" className="hover:text-pink-500 transition">
               <FaInstagram />
             </a>
-            <a href="#" className="hover:text-blue-500 transition">
+            <a
+              href="https://www.linkedin.com/in/rakibulhossain04/"
+              target="_blank"
+              className="hover:text-blue-500 transition"
+            >
               <FaLinkedinIn />
             </a>
           </div>

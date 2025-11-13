@@ -1,11 +1,15 @@
-import React, { use } from "react";
+import React, { use, useRef, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useLocation, useNavigate } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
+import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login = () => {
+  const [show, setShow] = useState(false);
+  const [error, setError] = useState("");
   const { signInUser, signInWithGoogle } = use(AuthContext);
-
+  const emailRef = useRef("");
   const location = useLocation();
   const navigate = useNavigate();
   console.log(location);
@@ -26,15 +30,22 @@ const Login = () => {
         console.log(error);
       });
   };
+  //Forget Password
+  const handleForgotPassword = () => {
+    const email = emailRef.current.value;
+    navigate("/auth/forget-password", { state: { email } });
+  };
+
   // Google Sign in
   const handleGoogleSignIn = () => {
     signInWithGoogle()
-      .then((result) => {
-        console.log(result.user);
-        navigate(location?.state || "/");
+      .then(() => {
+        toast.success("Login successful!");
+        navigate(location.state ? location.state : "/");
       })
-      .catch((error) => {
-        console.log(error);
+      .catch((err) => {
+        toast.error("Login failed. Try again!");
+        setError(err.message);
       });
   };
   return (
@@ -48,7 +59,9 @@ const Login = () => {
           <div>
             <label className="block text-sm mb-1">Email</label>
             <input
+              required
               type="email"
+              ref={emailRef}
               name="email"
               placeholder="Enter Your Email"
               className="w-full p-2 rounded-lg bg-[#F1F5F9] dark:bg-[#334155] border border-[#E2E8F0] dark:border-[#475569] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
@@ -57,17 +70,35 @@ const Login = () => {
 
           <div>
             <label className="block text-sm mb-1">Password</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter Your Password"
-              className="w-full p-2 rounded-lg bg-[#F1F5F9] dark:bg-[#334155] border border-[#E2E8F0] dark:border-[#475569] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
-            />
+            <div className="relative">
+              <input
+                required
+                type={show ? "text" : "password"}
+                name="password"
+                placeholder="Enter Your Password"
+                className="w-full p-2 rounded-lg bg-[#F1F5F9] dark:bg-[#334155] border border-[#E2E8F0] dark:border-[#475569] focus:outline-none focus:ring-2 focus:ring-[#2563EB]"
+              />
+              <span
+                onClick={() => setShow(!show)}
+                className="absolute right-4 top-3.5 cursor-pointer text-gray-500"
+              >
+                {show ? <FaEye /> : <FaEyeSlash />}
+              </span>
+            </div>
           </div>
 
           <div className="flex justify-between text-sm text-[#2563EB] dark:text-[#93C5FD]">
-            <Link to="#">Forget Password?</Link>
-            <Link to="/auth/register">Create Account</Link>
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="hover:underline"
+            >
+              Forgot Password?
+            </button>
+
+            <Link to="/auth/register" className="hover:underline">
+              Create Account
+            </Link>
           </div>
 
           <button

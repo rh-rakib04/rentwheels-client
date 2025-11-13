@@ -9,6 +9,8 @@ import Register from "../pages/Auth/Register";
 import PrivateRoute from "./PrivateRoute";
 import BrowseCars from "../pages/BrowserCar";
 import CarDetails from "../components/CarDetails";
+import ForgetPassword from "../pages/Auth/ForgetPassword";
+import NotFound from "../pages/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +64,14 @@ const router = createBrowserRouter([
       {
         path: "/auth/register",
         element: <Register />,
+      },
+      {
+        path: "/auth/forget-password",
+        element: <ForgetPassword />,
+      },
+      {
+        path: "*",
+        element: <NotFound />,
       },
     ],
   },

@@ -1,45 +1,75 @@
-import React, { use } from "react";
+import React, { useContext, useState } from "react";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Register = () => {
-  const { createUser, updateUserProfile, signInWithGoogle } = use(AuthContext);
+  const [show, setShow] = useState(false);
+  const { createUser, updateUserProfile, signInWithGoogle, setUser } =
+    useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleRegister = (event) => {
     event.preventDefault();
-    const displayName = event.target.displayName.value;
-    const photoURL = event.target.photoURL.value;
-    const email = event.target.email.value;
+    const displayName = event.target.displayName.value.trim();
+    const photoURL = event.target.photoURL.value.trim();
+    const email = event.target.email.value.trim();
     const password = event.target.password.value;
 
-    toast.loading("Creating user...", { id: "create-user" });
+    // ✅ Name validation
+    if (displayName.length < 5) {
+      toast.error("Name must be at least 5 characters long.");
+      return;
+    }
 
+    // ✅ Password validation
+    const regExp = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+    if (!regExp.test(password)) {
+      toast.error(
+        "Password must have at least 6 characters, including uppercase and lowercase letters."
+      );
+      return;
+    }
+
+    toast.loading("Creating account...", { id: "register-process" });
+
+    // ✅ Create User
     createUser(email, password)
       .then((result) => {
-        console.log(result.user);
-        updateUserProfile(displayName, photoURL);
-        toast.success("User created successfully!", { id: "create-user" });
+        const user = result.user;
+        updateUserProfile({ displayName, photoURL })
+          .then(() => {
+            setUser({ ...user, displayName, photoURL });
+            toast.success("Registration successful!", {
+              id: "register-process",
+            });
+            navigate("/");
+          })
+          .catch((err) =>
+            toast.error("Profile update failed: " + err.message, {
+              id: "register-process",
+            })
+          );
       })
       .catch((error) => {
-        console.log(error);
-        toast.error(error.message, { id: "create-user" });
+        toast.error(error.message, { id: "register-process" });
       });
   };
 
+  // ✅ Google Sign In
   const handleGoogleSignIn = () => {
-    toast.loading("Creating user...", { id: "create-user" });
+    toast.loading("Creating account...", { id: "google-register" });
     signInWithGoogle()
       .then((result) => {
-        toast.success("User created successfully!", { id: "create-user" });
-        console.log(result.user);
+        toast.success("Google account registered successfully!", {
+          id: "google-register",
+        });
         navigate("/");
       })
       .catch((error) => {
-        console.log(error);
-        toast.error(error.message, { id: "create-user" });
+        toast.error(error.message, { id: "google-register" });
       });
   };
 
@@ -59,8 +89,9 @@ const Register = () => {
             <input
               type="text"
               name="displayName"
-              placeholder="Enter Your Name"
+              placeholder="Enter your full name"
               className="w-full mt-1 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
             />
           </div>
 
@@ -72,7 +103,7 @@ const Register = () => {
             <input
               name="photoURL"
               type="text"
-              placeholder="Enter Photo URL"
+              placeholder="Enter photo URL"
               className="w-full mt-1 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -85,7 +116,8 @@ const Register = () => {
             <input
               name="email"
               type="email"
-              placeholder="Enter Your Email"
+              placeholder="Enter your email"
+              required
               className="w-full mt-1 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -95,12 +127,21 @@ const Register = () => {
             <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
               Password
             </label>
-            <input
-              name="password"
-              type="password"
-              placeholder="Enter Your Password"
-              className="w-full mt-1 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="relative">
+              <input
+                type={show ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                required
+                className="w-full mt-1 px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <span
+                onClick={() => setShow(!show)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 dark:text-gray-400"
+              >
+                {show ? <FaEye /> : <FaEyeSlash />}
+              </span>
+            </div>
           </div>
 
           {/* Register Button */}
@@ -114,11 +155,11 @@ const Register = () => {
 
         {/* Divider */}
         <div className="flex items-center my-6">
-          <div className="flex-grow border-t border-slate-300 dark:border-slate-600"></div>
+          <div className="grow border-t border-slate-300 dark:border-slate-600"></div>
           <span className="px-3 text-slate-500 dark:text-slate-400 text-sm">
             OR
           </span>
-          <div className="flex-grow border-t border-slate-300 dark:border-slate-600"></div>
+          <div className="grow border-t border-slate-300 dark:border-slate-600"></div>
         </div>
 
         {/* Google Button */}
