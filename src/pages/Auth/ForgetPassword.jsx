@@ -7,7 +7,7 @@ import { IoArrowBack } from "react-icons/io5";
 import { AuthContext } from "../../context/AuthContext";
 
 const ForgetPassword = () => {
-  const { user, passwordReset, darkMode } = useContext(AuthContext);
+  const { passwordReset, darkMode } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const emailRef = useRef("");
