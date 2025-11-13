@@ -19,9 +19,7 @@ const CarDetails = () => {
 
   // ✅ Load car details
   useEffect(() => {
-    fetch(
-      `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars-details/${id}`
-    )
+    fetch(`https://rentwheels-server-nine.vercel.app/cars-details/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCar(data.result);
@@ -69,7 +67,7 @@ const CarDetails = () => {
       };
 
       const bookingRes = await fetch(
-        "https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/bookings",
+        "https://rentwheels-server-nine.vercel.app/bookings",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -81,7 +79,7 @@ const CarDetails = () => {
 
       // 2️⃣ Update car status to “Unavailable”
       const updateRes = await fetch(
-        `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars/${car._id}/status`,
+        `https://rentwheels-server-nine.vercel.app/cars/${car._id}/status`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

@@ -17,9 +17,7 @@ const BrowseCars = () => {
 
   //
   useEffect(() => {
-    fetch(
-      "https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars"
-    )
+    fetch("https://rentwheels-server-nine.vercel.app/cars")
       .then((res) => res.json())
       .then((data) => setCars(data))
       .catch((err) => err);

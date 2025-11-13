@@ -7,7 +7,7 @@ import CustomerTestimonials from "../components/Home/CustomerTestimonals";
 import UpcomingCars from "../components/Home/UpcomingCars";
 
 const featuredCarsPromise = fetch(
-  "https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/featured-cars"
+  "https://rentwheels-server-nine.vercel.app/featured-cars"
 ).then((res) => res.json());
 const Home = () => {
   return (
