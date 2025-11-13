@@ -141,13 +141,13 @@ const Navbar = () => {
               to="/auth/login"
               className="btn rounded-full btn-sm bg-yellow-500 hover:bg-yellow-400 text-white"
             >
-              <IoLogIn /> Login
+              Login
             </Link>
             <Link
               to="/auth/register"
               className="btn rounded-full btn-sm bg-yellow-500 hover:bg-yellow-400 text-white"
             >
-              <IoLogIn /> Register
+              Register
             </Link>
           </div>
         )}

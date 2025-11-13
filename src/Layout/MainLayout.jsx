@@ -1,12 +1,29 @@
-import React, { use } from "react";
+import React, { use, useEffect } from "react";
 import Navbar from "../components/Navbar";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 import Footer from "../components/Footer";
 import { AuthContext } from "../context/AuthContext";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const MainLayout = () => {
   const { darkMode } = use(AuthContext); // Get darkMode from context
+  const location = useLocation();
 
+  // 🌟 Initialize AOS globally
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      offset: 100,
+      once: false,
+      easing: "ease-in-out",
+    });
+  }, []);
+
+  // 🔄 Refresh AOS on every route change
+  useEffect(() => {
+    AOS.refresh();
+  }, [location.pathname]);
   return (
     <div
       className={`${

@@ -15,6 +15,7 @@ const WhyRentWithUs = () => {
       desc: "Choose from economy to luxury — we’ve got cars for every need and budget.",
       icon: <FaCarAlt />,
       color: "bg-yellow-500/10 text-yellow-500",
+      aos: "fade-up",
     },
     {
       id: 2,
@@ -22,6 +23,7 @@ const WhyRentWithUs = () => {
       desc: "We offer the most affordable rental prices without compromising quality.",
       icon: <FaMoneyBillWave />,
       color: "bg-green-500/10 text-green-500",
+      aos: "fade-up",
     },
     {
       id: 3,
@@ -29,6 +31,7 @@ const WhyRentWithUs = () => {
       desc: "Our friendly support team is always here to help you on the road.",
       icon: <FaHeadset />,
       color: "bg-blue-500/10 text-blue-500",
+      aos: "fade-up",
     },
     {
       id: 4,
@@ -36,28 +39,41 @@ const WhyRentWithUs = () => {
       desc: "Thousands of happy customers rely on RentWheels for their trips.",
       icon: <FaHandshake />,
       color: "bg-purple-500/10 text-purple-500",
+      aos: "fade-up",
     },
   ];
 
   return (
-    <section className="w-11/12 mx-auto my-20 text-center">
+    <section
+      className="w-11/12 mx-auto my-20 text-center"
+      data-aos="fade-up"
+      data-aos-duration="800"
+    >
       {/* Heading */}
-      <div className="mb-12">
+      <div className="mb-12" data-aos="fade-down">
         <h2 className="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3 text-yellow-500 dark:text-yellow-400">
           <FaLightbulb className="text-yellow-500 dark:text-yellow-400" /> Why
           Rent With Us
         </h2>
-        <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm md:text-base max-w-2xl mx-auto">
+        <p
+          className="text-gray-600 dark:text-gray-400 mt-2 text-sm md:text-base max-w-2xl mx-auto"
+          data-aos="fade-up"
+        >
           Experience hassle-free car rentals with unbeatable prices and trusted
           service.
         </p>
       </div>
 
       {/* Features Grid */}
-      <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
-        {features.map((f) => (
+      <div
+        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
+        data-aos="zoom-in-up"
+      >
+        {features.map((f, i) => (
           <div
             key={f.id}
+            data-aos={f.aos}
+            data-aos-delay={i * 150}
             className="group bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 flex flex-col items-center justify-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
           >
             <div

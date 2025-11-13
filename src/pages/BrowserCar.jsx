@@ -1,26 +1,53 @@
 import React, { useState, useEffect, useContext } from "react";
-import { FaSearch, FaSlidersH, FaStar, FaCar } from "react-icons/fa";
-import { IoIosArrowDown } from "react-icons/io";
+import { FaSearch, FaSlidersH, FaCar } from "react-icons/fa";
 import CarCard from "../components/CarCard";
-import { AuthContext } from "../context/AuthContext"; // Import context
+import { AuthContext } from "../context/AuthContext"; // Context for theme
 
 const BrowseCars = () => {
-  const { darkMode } = useContext(AuthContext); // Get darkMode from context
+  const { darkMode } = useContext(AuthContext);
   const [cars, setCars] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
   const [sortOption, setSortOption] = useState("Newest");
 
+  // Filter
+  const [selectedType, setSelectedType] = useState("");
+  const [selectedTransmission, setSelectedTransmission] = useState("");
+  const [selectedFuel, setSelectedFuel] = useState("");
+
+  //
   useEffect(() => {
     fetch("http://localhost:5000/cars")
       .then((res) => res.json())
-      .then((data) => setCars(data));
+      .then((data) => setCars(data))
+      .catch((err) => console.log(err));
   }, []);
 
-  // Filter
-  const filteredCars = cars.filter((car) =>
+  // Filter + Sort
+  let filteredCars = cars.filter((car) =>
     car.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (selectedType)
+    filteredCars = filteredCars.filter((car) => car.type === selectedType);
+  if (selectedTransmission)
+    filteredCars = filteredCars.filter(
+      (car) => car.transmission === selectedTransmission
+    );
+  if (selectedFuel)
+    filteredCars = filteredCars.filter((car) => car.fuel === selectedFuel);
+
+  if (sortOption === "Price: Low to High") {
+    filteredCars = [...filteredCars].sort((a, b) => a.price - b.price);
+  } else if (sortOption === "Price: High to Low") {
+    filteredCars = [...filteredCars].sort((a, b) => b.price - a.price);
+  } else if (sortOption === "Top Rated") {
+    filteredCars = [...filteredCars].sort((a, b) => b.rating - a.rating);
+  } else if (sortOption === "Newest") {
+    filteredCars = [...filteredCars].sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+    );
+  }
 
   return (
     <div
@@ -32,7 +59,10 @@ const BrowseCars = () => {
     >
       {/* HEADER */}
       <div className="max-w-6xl mx-auto text-center mb-10">
-        <h1 className="text-4xl md:text-5xl font-extrabold mb-3 flex justify-center items-center gap-3">
+        <h1
+          data-aos="fade-up"
+          className="text-4xl md:text-5xl font-extrabold mb-3 flex justify-center items-center gap-3"
+        >
           <FaCar
             className={
               darkMode ? "text-yellow-400 text-4xl" : "text-yellow-600 text-4xl"
@@ -40,7 +70,10 @@ const BrowseCars = () => {
           />{" "}
           Browse Our Cars
         </h1>
-        <p className={darkMode ? "text-gray-400" : "text-gray-600"}>
+        <p
+          data-aos="fade-down"
+          className={darkMode ? "text-gray-400" : "text-gray-600"}
+        >
           Explore the perfect ride for your next adventure — affordable, luxury,
           or electric.
         </p>
@@ -99,7 +132,7 @@ const BrowseCars = () => {
         </button>
       </div>
 
-      {/* FILTER PANEL */}
+      {/* FILTER */}
       {filterOpen && (
         <div
           className={`max-w-6xl mx-auto p-6 mb-10 grid md:grid-cols-3 gap-4 rounded-2xl transition-colors duration-300 ${
@@ -108,13 +141,23 @@ const BrowseCars = () => {
               : "bg-white/70 text-gray-800"
           }`}
         >
+          {/* Type */}
           <div>
             <h3 className="text-yellow-400 font-semibold mb-2">Car Type</h3>
             <div className="flex flex-wrap gap-3">
               {["SUV", "Sedan", "Electric"].map((type) => (
                 <span
                   key={type}
-                  className="bg-slate-900 px-3 py-1 rounded-lg cursor-pointer hover:bg-yellow-400 hover:text-black transition"
+                  onClick={() =>
+                    setSelectedType(selectedType === type ? "" : type)
+                  }
+                  className={`px-3 py-1 rounded-lg cursor-pointer transition ${
+                    selectedType === type
+                      ? "bg-yellow-400 text-black"
+                      : darkMode
+                      ? "bg-slate-900 text-white hover:bg-yellow-400 hover:text-black"
+                      : "bg-gray-200 text-black hover:bg-yellow-400 hover:text-black"
+                  }`}
                 >
                   {type}
                 </span>
@@ -122,13 +165,25 @@ const BrowseCars = () => {
             </div>
           </div>
 
+          {/* Transmission */}
           <div>
             <h3 className="text-yellow-400 font-semibold mb-2">Transmission</h3>
             <div className="flex gap-3">
               {["Automatic", "Manual"].map((trans) => (
                 <span
                   key={trans}
-                  className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition"
+                  onClick={() =>
+                    setSelectedTransmission(
+                      selectedTransmission === trans ? "" : trans
+                    )
+                  }
+                  className={`px-3 py-1 rounded-lg cursor-pointer transition ${
+                    selectedTransmission === trans
+                      ? "bg-yellow-400 text-black"
+                      : darkMode
+                      ? "bg-slate-900 text-white hover:bg-yellow-400 hover:text-black"
+                      : "bg-gray-200 text-black hover:bg-yellow-400 hover:text-black"
+                  }`}
                 >
                   {trans}
                 </span>
@@ -136,13 +191,23 @@ const BrowseCars = () => {
             </div>
           </div>
 
+          {/* Fuel */}
           <div>
             <h3 className="text-yellow-400 font-semibold mb-2">Fuel Type</h3>
             <div className="flex gap-3">
               {["Petrol", "Diesel", "Electric"].map((fuel) => (
                 <span
                   key={fuel}
-                  className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition"
+                  onClick={() =>
+                    setSelectedFuel(selectedFuel === fuel ? "" : fuel)
+                  }
+                  className={`px-3 py-1 rounded-lg cursor-pointer transition ${
+                    selectedFuel === fuel
+                      ? "bg-yellow-400 text-black"
+                      : darkMode
+                      ? "bg-slate-900 text-white hover:bg-yellow-400 hover:text-black"
+                      : "bg-gray-200 text-black hover:bg-yellow-400 hover:text-black"
+                  }`}
                 >
                   {fuel}
                 </span>
@@ -152,7 +217,7 @@ const BrowseCars = () => {
         </div>
       )}
 
-      {/* CARS GRID */}
+      {/* CAR GRID */}
       <div className="max-w-6xl mx-auto grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         {filteredCars.length > 0 ? (
           filteredCars.map((car) => <CarCard key={car._id} car={car} />)

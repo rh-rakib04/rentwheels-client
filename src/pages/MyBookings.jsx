@@ -67,7 +67,15 @@ const MyBookings = () => {
           : "bg-gray-100 text-gray-900"
       }`}
     >
-      <h1 className="text-3xl font-bold text-center mb-10 text-yellow-400">
+      <h1
+        data-aos="fade-up"
+        className="text-4xl font-extrabold flex justify-center items-center gap-3"
+      >
+        <FaCarSide
+          className={`text-4xl my-10 ${
+            darkMode ? "text-yellow-400" : "text-yellow-600"
+          }`}
+        />
         My Booked Cars
       </h1>
 

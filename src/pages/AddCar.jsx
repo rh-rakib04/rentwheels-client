@@ -46,6 +46,7 @@ const AddCar = () => {
       }`}
     >
       <h1
+        data-aos="fade-up"
         className={`text-3xl font-bold text-center mb-6 ${
           darkMode ? "text-yellow-400" : "text-yellow-500"
         }`}
@@ -53,7 +54,7 @@ const AddCar = () => {
         Add a New Car
       </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form data-aos="fade-up" onSubmit={handleSubmit} className="space-y-5">
         {/* Car Name */}
         <div>
           <label

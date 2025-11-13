@@ -127,7 +127,10 @@ const MyListings = () => {
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-extrabold flex justify-center items-center gap-3">
+          <h1
+            data-aos="fade-up"
+            className="text-4xl font-extrabold flex justify-center items-center gap-3"
+          >
             <FaCarSide
               className={`text-4xl ${
                 darkMode ? "text-yellow-400" : "text-yellow-600"
@@ -135,7 +138,10 @@ const MyListings = () => {
             />{" "}
             My Listings
           </h1>
-          <p className={darkMode ? "text-gray-400" : "text-gray-600"}>
+          <p
+            data-aos="fade-down"
+            className={darkMode ? "text-gray-400" : "text-gray-600"}
+          >
             Manage all your listed cars — update details or remove them anytime.
           </p>
         </div>

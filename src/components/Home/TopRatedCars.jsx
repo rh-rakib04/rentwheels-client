@@ -1,18 +1,24 @@
-import React, { use } from "react";
-import { FaStar, FaStarHalfAlt } from "react-icons/fa";
+import React, { use, useEffect } from "react";
+import { FaStar } from "react-icons/fa";
 import { Link } from "react-router";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const TopRatedCars = ({ featuredCarsPromise }) => {
   const cars = use(featuredCarsPromise);
+
   return (
     <section className="w-11/12 mx-auto my-20">
       {/* Header */}
-      <div className="text-center mb-10">
+      <div className="text-center mb-10" data-aos="fade-down">
         <h1 className="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3 text-yellow-500 dark:text-yellow-400">
           <FaStar className="text-yellow-500 dark:text-yellow-400" />
           Top Rated Cars
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm md:text-base max-w-xl mx-auto">
+        <p
+          className="text-gray-600 dark:text-gray-400 mt-2 text-sm md:text-base max-w-xl mx-auto"
+          data-aos="fade-up"
+        >
           Check out the cars that our customers love the most — rated highly for
           performance, comfort, and reliability.
         </p>
@@ -20,9 +26,11 @@ const TopRatedCars = ({ featuredCarsPromise }) => {
 
       {/* Cars Grid */}
       <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-        {cars.map((car) => (
+        {cars.map((car, index) => (
           <div
             key={car._id}
+            data-aos="zoom-in-up"
+            data-aos-delay={index * 100}
             className="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2"
           >
             <figure className="relative">
@@ -37,8 +45,13 @@ const TopRatedCars = ({ featuredCarsPromise }) => {
                 {car.rating || 4.8}
               </div>
             </figure>
+
             <div className="p-5">
-              <h2 className="text-xl font-semibold mb-1 text-gray-800 dark:text-white">
+              <h2
+                className="text-xl font-semibold mb-1 text-gray-800 dark:text-white"
+                data-aos="fade-right"
+                data-aos-delay={index * 150}
+              >
                 {car.name}
               </h2>
               <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
@@ -60,7 +73,7 @@ const TopRatedCars = ({ featuredCarsPromise }) => {
       </div>
 
       {/* View All Button */}
-      <div className="text-center mt-12">
+      <div className="text-center mt-12" data-aos="fade-up">
         <Link
           to="/browse-cars"
           className="inline-block bg-yellow-500 text-white dark:text-black px-6 py-2 rounded-full font-semibold hover:bg-yellow-400 dark:hover:bg-yellow-300 shadow-md transition-all duration-300"
