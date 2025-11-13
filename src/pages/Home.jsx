@@ -3,6 +3,7 @@ import Slider from "../components/Home/Slider";
 import FeaturedCars from "../components/Home/FeaturedCars";
 import WhyRentWithUs from "../components/Home/WhyRentWithUs";
 import TopRatedCars from "../components/Home/TopRatedCars";
+import CustomerTestimonials from "../components/Home/CustomerTestimonals";
 
 const featuredCarsPromise = fetch("http://localhost:5000/featured-cars").then(
   (res) => res.json()
@@ -14,6 +15,7 @@ const Home = () => {
       <FeaturedCars featuredCarsPromise={featuredCarsPromise} />
       <WhyRentWithUs />
       <TopRatedCars featuredCarsPromise={featuredCarsPromise} />
+      <CustomerTestimonials />
     </div>
   );
 };
