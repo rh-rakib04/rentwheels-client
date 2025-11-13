@@ -14,7 +14,9 @@ const MyListings = () => {
   // Fetch user's cars
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:5000/cars?email=${user.email}`)
+      fetch(
+        `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars?email=${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => {
           setMyCars(data);
@@ -44,9 +46,12 @@ const MyListings = () => {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/cars/${id}`, {
-          method: "DELETE",
-        })
+        fetch(
+          `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars/${id}`,
+          {
+            method: "DELETE",
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             Swal.fire({
@@ -87,14 +92,17 @@ const MyListings = () => {
       location: form.location.value,
     };
 
-    fetch(`http://localhost:5000/cars/${selectedCar._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedCar),
-    })
+    fetch(
+      `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars/${selectedCar._id}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedCar),
+      }
+    )
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         toast.success("Successfully updated!");
         setMyCars((prevCars) =>
           prevCars.map((car) =>
@@ -104,7 +112,7 @@ const MyListings = () => {
         setIsModalOpen(false);
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
       });
   };
 

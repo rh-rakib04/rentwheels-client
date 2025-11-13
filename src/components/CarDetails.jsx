@@ -17,14 +17,17 @@ const CarDetails = () => {
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // ✅ Load car details
   useEffect(() => {
-    fetch(`http://localhost:5000/cars-details/${id}`)
+    fetch(
+      `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars-details/${id}`
+    )
       .then((res) => res.json())
       .then((data) => {
         setCar(data.result);
         setLoading(false);
-      })
-      .catch((err) => console.error(err));
+      });
+    // .catch((err) => console.error(err));
   }, [id]);
 
   if (loading)
@@ -40,8 +43,9 @@ const CarDetails = () => {
         ❌ Car not found.
       </div>
     );
-  // Booking Handle
-  const handleBooking = () => {
+
+  // ✅ Handle Booking
+  const handleBooking = async () => {
     if (!user?.email) {
       Swal.fire({
         title: "Login Required",
@@ -52,39 +56,60 @@ const CarDetails = () => {
       return;
     }
 
-    const bookingData = {
-      carId: car._id,
-      carName: car.name,
-      image: car.image,
-      price: car.rentPrice,
-      userEmail: user.email,
-      date: new Date().toLocaleDateString(),
-      status: "Booked",
-    };
+    try {
+      // 1️⃣ Save booking data
+      const bookingData = {
+        carId: car._id,
+        carName: car.name,
+        image: car.image,
+        price: car.rentPrice,
+        userEmail: user.email,
+        date: new Date().toLocaleDateString(),
+        status: "Booked",
+      };
 
-    fetch("http://localhost:5000/bookings", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bookingData),
-    })
-      .then((res) => res.json())
-      .then(() => {
-        Swal.fire({
-          title: "Car Booked Successfully!",
-          text: "You can see your booking in the 'My Bookings' page.",
-          icon: "success",
-          confirmButtonColor: "#facc15",
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-        Swal.fire({
-          title: "Error!",
-          text: "Something went wrong while booking the car.",
-          icon: "error",
-        });
+      const bookingRes = await fetch(
+        "https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/bookings",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(bookingData),
+        }
+      );
+
+      if (!bookingRes.ok) throw new Error("Failed to save booking");
+
+      // 2️⃣ Update car status to “Unavailable”
+      const updateRes = await fetch(
+        `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars/${car._id}/status`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: "Unavailable" }),
+        }
+      );
+
+      if (!updateRes.ok) throw new Error("Failed to update car status");
+
+      // 3️⃣ Update UI + toast
+      setCar((prev) => ({ ...prev, status: "Unavailable" }));
+
+      Swal.fire({
+        title: "Car Booked Successfully!",
+        text: "You can see your booking in the 'My Bookings' page.",
+        icon: "success",
+        confirmButtonColor: "#facc15",
       });
+    } catch (error) {
+      // console.error(error);
+      Swal.fire({
+        title: "Error!",
+        text: "Something went wrong while booking the car.",
+        icon: "error",
+      });
+    }
   };
+
   return (
     <div
       className={`min-h-screen py-12 px-6 transition-all duration-500 ${
@@ -182,52 +207,32 @@ const CarDetails = () => {
           >
             <span
               className={`mb-5 px-6 py-2 rounded-full text-sm font-semibold ${
-                car.status === "Booked"
+                car.status === "Unavailable"
                   ? "bg-red-500/20 text-red-400"
                   : "bg-green-500/20 text-green-500"
               }`}
             >
-              {car.status || "Available"}
+              {car.status === "Unavailable" ? "Unavailable" : "Available"}
             </span>
             <button
-              disabled={car.status === "Booked"}
+              disabled={car.status === "Unavailable"}
               onClick={handleBooking}
               className={`w-full py-3 rounded-xl font-bold transition ${
-                car.status === "Booked"
+                car.status === "Unavailable"
                   ? "bg-gray-700 text-gray-400 cursor-not-allowed"
                   : "bg-yellow-400 text-black hover:bg-yellow-500 hover:shadow-yellow-400/40 hover:shadow-lg"
               }`}
             >
-              {car.status === "Booked" ? "Already Booked" : "Book Now"}
+              {car.status === "Unavailable" ? "Already Booked" : "Book Now"}
             </button>
           </div>
-        </div>
-
-        {/* Footer */}
-        <div
-          className={`mt-12 text-center text-sm ${
-            darkMode ? "text-gray-400" : "text-gray-500"
-          }`}
-        >
-          🚘 Explore more vehicles on our{" "}
-          <Link
-            to="/browse-cars"
-            className={`font-medium transition ${
-              darkMode
-                ? "text-yellow-400 hover:text-yellow-300"
-                : "text-yellow-600 hover:text-yellow-500"
-            }`}
-          >
-            Browse Cars
-          </Link>{" "}
-          page.
         </div>
       </div>
     </div>
   );
 };
 
-// ✅ Helper Component
+// ✅ Reusable InfoItem
 const InfoItem = ({ icon, label, value, darkMode }) => (
   <div
     className={`flex items-center gap-3 ${

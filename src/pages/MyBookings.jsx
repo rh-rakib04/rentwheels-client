@@ -11,7 +11,9 @@ const MyBookings = () => {
   // ✅ Fetch bookings for logged-in user
   useEffect(() => {
     if (user?.email) {
-      fetch(`http://localhost:5000/bookings/${user.email}`)
+      fetch(
+        `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/bookings/${user.email}`
+      )
         .then((res) => res.json())
         .then((data) => {
           setBookings(data.result || []);
@@ -35,7 +37,10 @@ const MyBookings = () => {
       color: darkMode ? "#f8fafc" : "#111827",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/bookings/${id}`, { method: "DELETE" })
+        fetch(
+          `https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/bookings/${id}`,
+          { method: "DELETE" }
+        )
           .then((res) => res.json())
           .then(() => {
             setBookings(bookings.filter((b) => b._id !== id));

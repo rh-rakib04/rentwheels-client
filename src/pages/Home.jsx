@@ -6,9 +6,9 @@ import TopRatedCars from "../components/Home/TopRatedCars";
 import CustomerTestimonials from "../components/Home/CustomerTestimonals";
 import UpcomingCars from "../components/Home/UpcomingCars";
 
-const featuredCarsPromise = fetch("http://localhost:5000/featured-cars").then(
-  (res) => res.json()
-);
+const featuredCarsPromise = fetch(
+  "https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/featured-cars"
+).then((res) => res.json());
 const Home = () => {
   return (
     <div>

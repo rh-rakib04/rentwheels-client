@@ -6,12 +6,12 @@ import { getAuth } from "firebase/auth";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBtQIGmFnRMq12SwbXSQMSBH7gSe1ii6Cs",
-  authDomain: "rent-wheels-526aa.firebaseapp.com",
-  projectId: "rent-wheels-526aa",
-  storageBucket: "rent-wheels-526aa.firebasestorage.app",
-  messagingSenderId: "563755453161",
-  appId: "1:563755453161:web:3ab6d32a5bf23445f6fe78",
+  apiKey: import.meta.env.VITE_apiKey,
+  authDomain: import.meta.env.VITE_authDomain,
+  projectId: import.meta.env.VITE_projectId,
+  storageBucket: import.meta.env.VITE_storageBucket,
+  messagingSenderId: import.meta.env.VITE_messagingSenderId,
+  appId: import.meta.env.VITE_appId,
 };
 
 // Initialize Firebase

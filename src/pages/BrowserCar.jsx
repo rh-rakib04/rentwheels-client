@@ -17,10 +17,12 @@ const BrowseCars = () => {
 
   //
   useEffect(() => {
-    fetch("http://localhost:5000/cars")
+    fetch(
+      "https://rentwheels-server-7fh3v8khj-rakibul-hossain-bhuiyas-projects.vercel.app/cars"
+    )
       .then((res) => res.json())
       .then((data) => setCars(data))
-      .catch((err) => console.log(err));
+      .catch((err) => err);
   }, []);
 
   // Filter + Sort
