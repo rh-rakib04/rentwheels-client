@@ -1,11 +1,15 @@
 import React, { useEffect, useState, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { FaTrash, FaEdit, FaCarSide, FaSpinner } from "react-icons/fa";
+import toast from "react-hot-toast";
+import Swal from "sweetalert2";
 
 const MyListings = () => {
-  const { user, darkMode } = useContext(AuthContext); // Get darkMode from context
+  const { user, darkMode } = useContext(AuthContext);
   const [myCars, setMyCars] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCar, setSelectedCar] = useState(null); // for update modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Fetch user's cars
   useEffect(() => {
@@ -21,15 +25,87 @@ const MyListings = () => {
   }, [user]);
 
   // Delete a car
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this car?")) return;
-
-    const res = await fetch(`http://localhost:5000/cars/${id}`, {
-      method: "DELETE",
+  const handleDelete = (id) => {
+    Swal.fire({
+      title: "Remove this car?",
+      text: "This action cannot be undone!",
+      icon: "warning",
+      background: "#0f172a",
+      color: "#fff",
+      showCancelButton: true,
+      confirmButtonColor: "#facc15",
+      cancelButtonColor: "#475569",
+      confirmButtonText: "Yes, delete it",
+      cancelButtonText: "Cancel",
+      customClass: {
+        popup: "rounded-2xl shadow-lg border border-slate-700",
+        confirmButton: "rounded-lg font-semibold px-5 py-2",
+        cancelButton: "rounded-lg font-semibold px-5 py-2",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        fetch(`http://localhost:5000/cars/${id}`, {
+          method: "DELETE",
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            Swal.fire({
+              title: "Deleted!",
+              text: "The car has been successfully removed.",
+              icon: "success",
+              background: "#0f172a",
+              color: "#fff",
+              confirmButtonColor: "#facc15",
+            });
+            setMyCars((prevCars) => prevCars.filter((car) => car._id !== id));
+          });
+      }
     });
-    if (res.ok) {
-      setMyCars(myCars.filter((car) => car._id !== id));
-    }
+  };
+
+  // Open modal
+  const openModal = (car) => {
+    setSelectedCar(car);
+    setIsModalOpen(true);
+  };
+
+  // Close modal
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedCar(null);
+  };
+
+  // Handle update form submit
+  const handleUpdate = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const updatedCar = {
+      name: form.name.value,
+      category: form.category.value,
+      rentPrice: form.rentPrice.value,
+      image: form.image.value,
+      location: form.location.value,
+    };
+
+    fetch(`http://localhost:5000/cars/${selectedCar._id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(updatedCar),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        toast.success("Successfully updated!");
+        setMyCars((prevCars) =>
+          prevCars.map((car) =>
+            car._id === selectedCar._id ? { ...car, ...updatedCar } : car
+          )
+        );
+        setIsModalOpen(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   if (loading) {
@@ -135,6 +211,7 @@ const MyListings = () => {
                     </td>
                     <td className="px-4 py-3 flex justify-center gap-2 flex-wrap">
                       <button
+                        onClick={() => openModal(car)}
                         className={`px-3 py-1 rounded-md text-sm font-semibold flex items-center gap-1 transition ${
                           darkMode
                             ? "bg-yellow-400 text-black hover:bg-yellow-500"
@@ -157,6 +234,87 @@ const MyListings = () => {
           </div>
         )}
       </div>
+
+      {/* 🟡 Update Modal */}
+      {isModalOpen && selectedCar && (
+        <div className="fixed inset-0 bg-black/70 flex justify-center items-center z-50">
+          <div
+            className={`p-6 rounded-xl shadow-2xl w-full max-w-lg mx-2 ${
+              darkMode ? "bg-slate-900 text-white" : "bg-white text-gray-900"
+            }`}
+          >
+            <h2 className="text-2xl font-bold mb-4 text-center text-yellow-500">
+              Update Car Info
+            </h2>
+            <form onSubmit={handleUpdate} className="space-y-3">
+              <input
+                name="name"
+                defaultValue={selectedCar.name}
+                placeholder="Car Name"
+                className="w-full border rounded-md px-3 py-2"
+                required
+              />
+              <input
+                name="category"
+                defaultValue={selectedCar.category}
+                placeholder="Category"
+                className="w-full border rounded-md px-3 py-2"
+                required
+              />
+              <input
+                name="rentPrice"
+                type="number"
+                defaultValue={selectedCar.rentPrice}
+                placeholder="Rent Price per day"
+                className="w-full border rounded-md px-3 py-2"
+                required
+              />
+              <input
+                name="location"
+                defaultValue={selectedCar.location}
+                placeholder="Location"
+                className="w-full border rounded-md px-3 py-2"
+                required
+              />
+              <input
+                name="image"
+                defaultValue={selectedCar.image}
+                placeholder="Image URL"
+                className="w-full border rounded-md px-3 py-2"
+                required
+              />
+              <input
+                defaultValue={user.displayName}
+                placeholder="Provider Name"
+                className="w-full border rounded-md px-3 py-2"
+                readOnly
+              />
+              <input
+                defaultValue={user.email}
+                placeholder="Provider Email"
+                className="w-full border rounded-md px-3 py-2"
+                readOnly
+              />
+
+              <div className="flex justify-end gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="px-4 py-2 rounded-md font-semibold bg-gray-500 hover:bg-gray-600 text-white"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-md font-semibold bg-yellow-500 hover:bg-yellow-600 text-black"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

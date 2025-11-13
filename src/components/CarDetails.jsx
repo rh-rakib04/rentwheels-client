@@ -9,9 +9,10 @@ import {
 } from "react-icons/fa";
 import { IoArrowBack } from "react-icons/io5";
 import { AuthContext } from "../context/AuthContext";
+import Swal from "sweetalert2";
 
 const CarDetails = () => {
-  const { user } = use(AuthContext);
+  const { user, darkMode } = use(AuthContext);
   const { id } = useParams();
   const [car, setCar] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,99 +40,183 @@ const CarDetails = () => {
         ❌ Car not found.
       </div>
     );
+  // Booking Handle
+  const handleBooking = () => {
+    if (!user?.email) {
+      Swal.fire({
+        title: "Login Required",
+        text: "Please log in to book a car.",
+        icon: "info",
+        confirmButtonColor: "#facc15",
+      });
+      return;
+    }
 
+    const bookingData = {
+      carId: car._id,
+      carName: car.name,
+      image: car.image,
+      price: car.rentPrice,
+      userEmail: user.email,
+      date: new Date().toLocaleDateString(),
+      status: "Booked",
+    };
+
+    fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookingData),
+    })
+      .then((res) => res.json())
+      .then(() => {
+        Swal.fire({
+          title: "Car Booked Successfully!",
+          text: "You can see your booking in the 'My Bookings' page.",
+          icon: "success",
+          confirmButtonColor: "#facc15",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        Swal.fire({
+          title: "Error!",
+          text: "Something went wrong while booking the car.",
+          icon: "error",
+        });
+      });
+  };
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white py-12 px-6">
-      <div className="max-w-5xl mx-auto">
+    <div
+      className={`min-h-screen py-12 px-6 transition-all duration-500 ${
+        darkMode
+          ? "bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white"
+          : "bg-gradient-to-b from-gray-50 via-white to-gray-100 text-gray-900"
+      }`}
+    >
+      <div
+        className={`max-w-6xl mx-auto backdrop-blur-2xl rounded-3xl shadow-2xl p-10 border transition-all duration-500 ${
+          darkMode
+            ? "bg-slate-900/60 border-slate-700"
+            : "bg-white/80 border-gray-200"
+        }`}
+      >
         {/* Back Button */}
         <Link
           to="/browse-cars"
-          className="flex items-center gap-2 text-yellow-400 hover:text-yellow-300 font-semibold mb-6"
+          className={`flex items-center gap-2 font-semibold mb-6 transition ${
+            darkMode
+              ? "text-yellow-400 hover:text-yellow-300"
+              : "text-yellow-600 hover:text-yellow-500"
+          }`}
         >
           <IoArrowBack className="text-lg" /> Back to Browse
         </Link>
 
-        {/* Car Card */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 bg-slate-900/60 p-8 rounded-2xl shadow-xl border border-slate-800">
-          {/* Car Image */}
-          <div className="relative group">
-            <img
-              src={car.image}
-              alt={car.name}
-              className="rounded-2xl w-full h-[350px] object-cover shadow-lg transition-transform duration-500 group-hover:scale-105"
-            />
-            <div className="absolute top-4 left-4 bg-yellow-400 text-black font-bold px-3 py-1 rounded-lg shadow-md text-sm">
-              ${car.rentPrice}/day
-            </div>
-          </div>
-
-          {/* Car Info */}
-          <div>
-            <h1 className="text-4xl font-extrabold mb-4 flex items-center gap-3">
-              <FaCarSide className="text-yellow-400" /> {car.name}
-            </h1>
-
-            <p className="text-gray-400 mb-6 leading-relaxed">
-              {car.description || "No detailed description available."}
-            </p>
-
-            {/* Car Attributes */}
-            <div className="space-y-3 text-lg">
-              <div className="flex items-center gap-3">
-                <FaTag className="text-yellow-400" />
-                <span className="font-semibold">Category:</span> {car.category}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <FaMapMarkerAlt className="text-yellow-400" />
-                <span className="font-semibold">Location:</span> {car.location}
-              </div>
-
-              <div className="flex items-center gap-3">
-                <FaDollarSign className="text-yellow-400" />
-                <span className="font-semibold">Price:</span> ${car.rentPrice} /
-                day
-              </div>
-
-              <div className="flex items-center gap-3">
-                <FaUser className="text-yellow-400" />
-                <span className="font-semibold">Provider:</span>{" "}
-                {user.displayName || "Not specified"}
-              </div>
-            </div>
-
-            {/* Status + Action */}
-            <div className="mt-8 flex items-center gap-6">
-              <span
-                className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                  car.status === "Booked"
-                    ? "bg-red-500/20 text-red-400"
-                    : "bg-green-500/20 text-green-400"
-                }`}
-              >
-                {car.status || "Available"}
-              </span>
-
-              <button
-                className={`px-6 py-3 rounded-xl font-semibold shadow-lg transition ${
-                  car.status === "Booked"
-                    ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                    : "bg-yellow-400 hover:bg-yellow-500 text-black"
-                }`}
-                disabled={car.status === "Booked"}
-              >
-                {car.status === "Booked" ? "Already Booked" : "Book Now"}
-              </button>
-            </div>
+        {/* Car Image */}
+        <div className="relative group mb-10 overflow-hidden rounded-2xl">
+          <img
+            src={car.image}
+            alt={car.name}
+            className="w-full h-[400px] object-cover rounded-2xl shadow-lg transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute bottom-4 right-4 bg-yellow-400 text-black px-5 py-2 rounded-full font-bold shadow-lg text-lg">
+            ${car.rentPrice}/day
           </div>
         </div>
 
-        {/* Optional section: related cars */}
-        <div className="mt-12 text-center text-gray-400 text-sm">
+        {/* Car Details */}
+        <div className="grid md:grid-cols-2 gap-12 items-start">
+          {/* Info Section */}
+          <div>
+            <h1
+              className={`text-4xl font-extrabold flex items-center gap-3 mb-3 ${
+                darkMode ? "text-yellow-400" : "text-yellow-600"
+              }`}
+            >
+              <FaCarSide /> {car.name}
+            </h1>
+            <p
+              className={`mb-6 leading-relaxed ${
+                darkMode ? "text-gray-300" : "text-gray-700"
+              }`}
+            >
+              {car.description ||
+                "This vehicle offers premium comfort, reliability, and performance to make your trip unforgettable."}
+            </p>
+
+            <div className="space-y-4 text-lg">
+              <InfoItem
+                icon={<FaTag />}
+                label="Category"
+                value={car.category}
+                darkMode={darkMode}
+              />
+              <InfoItem
+                icon={<FaMapMarkerAlt />}
+                label="Location"
+                value={car.location}
+                darkMode={darkMode}
+              />
+              <InfoItem
+                icon={<FaDollarSign />}
+                label="Price"
+                value={`$${car.rentPrice}/day`}
+                darkMode={darkMode}
+              />
+              <InfoItem
+                icon={<FaUser />}
+                label="Provider"
+                value={user?.displayName || "Not specified"}
+                darkMode={darkMode}
+              />
+            </div>
+          </div>
+
+          {/* Booking Panel */}
+          <div
+            className={`p-8 rounded-2xl border shadow-lg flex flex-col justify-center items-center text-center transition-all duration-500 ${
+              darkMode
+                ? "bg-slate-800/60 border-slate-700"
+                : "bg-gray-50 border-gray-200"
+            }`}
+          >
+            <span
+              className={`mb-5 px-6 py-2 rounded-full text-sm font-semibold ${
+                car.status === "Booked"
+                  ? "bg-red-500/20 text-red-400"
+                  : "bg-green-500/20 text-green-500"
+              }`}
+            >
+              {car.status || "Available"}
+            </span>
+            <button
+              disabled={car.status === "Booked"}
+              onClick={handleBooking}
+              className={`w-full py-3 rounded-xl font-bold transition ${
+                car.status === "Booked"
+                  ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                  : "bg-yellow-400 text-black hover:bg-yellow-500 hover:shadow-yellow-400/40 hover:shadow-lg"
+              }`}
+            >
+              {car.status === "Booked" ? "Already Booked" : "Book Now"}
+            </button>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div
+          className={`mt-12 text-center text-sm ${
+            darkMode ? "text-gray-400" : "text-gray-500"
+          }`}
+        >
           🚘 Explore more vehicles on our{" "}
           <Link
             to="/browse-cars"
-            className="text-yellow-400 hover:underline font-medium"
+            className={`font-medium transition ${
+              darkMode
+                ? "text-yellow-400 hover:text-yellow-300"
+                : "text-yellow-600 hover:text-yellow-500"
+            }`}
           >
             Browse Cars
           </Link>{" "}
@@ -141,5 +226,25 @@ const CarDetails = () => {
     </div>
   );
 };
+
+// ✅ Helper Component
+const InfoItem = ({ icon, label, value, darkMode }) => (
+  <div
+    className={`flex items-center gap-3 ${
+      darkMode ? "text-gray-300" : "text-gray-700"
+    }`}
+  >
+    <div
+      className={`p-2 rounded-lg ${
+        darkMode
+          ? "bg-yellow-400/10 text-yellow-400"
+          : "bg-yellow-100 text-yellow-600"
+      }`}
+    >
+      {icon}
+    </div>
+    <span className="font-semibold">{label}:</span> {value}
+  </div>
+);
 
 export default CarDetails;
