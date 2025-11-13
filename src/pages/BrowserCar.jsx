@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { FaSearch, FaSlidersH, FaStar, FaCar } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
 import CarCard from "../components/CarCard";
+import { AuthContext } from "../context/AuthContext"; // Import context
 
 const BrowseCars = () => {
+  const { darkMode } = useContext(AuthContext); // Get darkMode from context
   const [cars, setCars] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterOpen, setFilterOpen] = useState(false);
@@ -21,27 +23,50 @@ const BrowseCars = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white py-12 px-6">
+    <div
+      className={`min-h-screen py-12 px-6 transition-colors duration-500 ${
+        darkMode
+          ? "bg-gradient-to-b from-slate-950 via-slate-900 to-black text-white"
+          : "bg-gray-100 text-gray-900"
+      }`}
+    >
       {/* HEADER */}
       <div className="max-w-6xl mx-auto text-center mb-10">
         <h1 className="text-4xl md:text-5xl font-extrabold mb-3 flex justify-center items-center gap-3">
-          <FaCar className="text-yellow-400 text-4xl" /> Browse Our Cars
+          <FaCar
+            className={
+              darkMode ? "text-yellow-400 text-4xl" : "text-yellow-600 text-4xl"
+            }
+          />{" "}
+          Browse Our Cars
         </h1>
-        <p className="text-gray-400">
+        <p className={darkMode ? "text-gray-400" : "text-gray-600"}>
           Explore the perfect ride for your next adventure — affordable, luxury,
           or electric.
         </p>
       </div>
 
       {/* SEARCH + FILTER BAR */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 mb-10 bg-slate-800/50 p-4 rounded-2xl backdrop-blur">
+      <div
+        className={`max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 mb-10 p-4 rounded-2xl backdrop-blur transition-colors duration-500 ${
+          darkMode ? "bg-slate-800/50" : "bg-white/50"
+        }`}
+      >
         {/* Search */}
         <div className="relative w-full md:w-1/2">
-          <FaSearch className="absolute left-3 top-3 text-gray-400" />
+          <FaSearch
+            className={`absolute left-3 top-3 ${
+              darkMode ? "text-gray-400" : "text-gray-500"
+            }`}
+          />
           <input
             type="text"
             placeholder="Search cars by name..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl bg-slate-900 text-white border border-slate-700 focus:border-yellow-400 outline-none"
+            className={`w-full pl-10 pr-4 py-2 rounded-xl border focus:border-yellow-400 outline-none transition-colors duration-300 ${
+              darkMode
+                ? "bg-slate-900 text-white border-slate-700"
+                : "bg-white text-gray-900 border-gray-300"
+            }`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -50,7 +75,11 @@ const BrowseCars = () => {
         {/* Sort Dropdown */}
         <div className="relative w-full md:w-1/4">
           <select
-            className="w-full bg-slate-900 border border-slate-700 text-white py-2 px-4 rounded-xl cursor-pointer focus:border-yellow-400"
+            className={`w-full py-2 px-4 rounded-xl cursor-pointer focus:border-yellow-400 transition-colors duration-300 ${
+              darkMode
+                ? "bg-slate-900 border border-slate-700 text-white"
+                : "bg-white border border-gray-300 text-gray-900"
+            }`}
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
           >
@@ -59,7 +88,6 @@ const BrowseCars = () => {
             <option>Price: High to Low</option>
             <option>Top Rated</option>
           </select>
-          {/* <IoIosArrowDown className="absolute right-3 top-3 text-gray-400 pointer-events-none" /> */}
         </div>
 
         {/* Filter Button */}
@@ -73,44 +101,52 @@ const BrowseCars = () => {
 
       {/* FILTER PANEL */}
       {filterOpen && (
-        <div className="max-w-6xl mx-auto bg-slate-800/70 p-6 rounded-2xl mb-10 grid md:grid-cols-3 gap-4 text-gray-300 animate-fadeIn">
+        <div
+          className={`max-w-6xl mx-auto p-6 mb-10 grid md:grid-cols-3 gap-4 rounded-2xl transition-colors duration-300 ${
+            darkMode
+              ? "bg-slate-800/70 text-gray-300"
+              : "bg-white/70 text-gray-800"
+          }`}
+        >
           <div>
             <h3 className="text-yellow-400 font-semibold mb-2">Car Type</h3>
             <div className="flex flex-wrap gap-3">
-              <span className="bg-slate-900 px-3 py-1 rounded-lg cursor-pointer hover:bg-yellow-400 hover:text-black transition">
-                SUV
-              </span>
-              <span className="bg-slate-900 px-3 py-1 rounded-lg cursor-pointer hover:bg-yellow-400 hover:text-black transition">
-                Sedan
-              </span>
-              <span className="bg-slate-900 px-3 py-1 rounded-lg cursor-pointer hover:bg-yellow-400 hover:text-black transition">
-                Electric
-              </span>
+              {["SUV", "Sedan", "Electric"].map((type) => (
+                <span
+                  key={type}
+                  className="bg-slate-900 px-3 py-1 rounded-lg cursor-pointer hover:bg-yellow-400 hover:text-black transition"
+                >
+                  {type}
+                </span>
+              ))}
             </div>
           </div>
+
           <div>
             <h3 className="text-yellow-400 font-semibold mb-2">Transmission</h3>
             <div className="flex gap-3">
-              <span className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-                Automatic
-              </span>
-              <span className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-                Manual
-              </span>
+              {["Automatic", "Manual"].map((trans) => (
+                <span
+                  key={trans}
+                  className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition"
+                >
+                  {trans}
+                </span>
+              ))}
             </div>
           </div>
+
           <div>
             <h3 className="text-yellow-400 font-semibold mb-2">Fuel Type</h3>
             <div className="flex gap-3">
-              <span className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-                Petrol
-              </span>
-              <span className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-                Diesel
-              </span>
-              <span className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition">
-                Electric
-              </span>
+              {["Petrol", "Diesel", "Electric"].map((fuel) => (
+                <span
+                  key={fuel}
+                  className="bg-slate-900 px-3 py-1 rounded-lg hover:bg-yellow-400 hover:text-black transition"
+                >
+                  {fuel}
+                </span>
+              ))}
             </div>
           </div>
         </div>
@@ -121,7 +157,7 @@ const BrowseCars = () => {
         {filteredCars.length > 0 ? (
           filteredCars.map((car) => <CarCard key={car._id} car={car} />)
         ) : (
-          <div className="col-span-full text-center text-gray-400 py-10">
+          <div className="col-span-full text-center py-10">
             🚫 No cars found. Try adjusting filters or search again.
           </div>
         )}
