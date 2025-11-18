@@ -12,7 +12,7 @@ const upcomingCars = [
   {
     id: 1,
     name: "Tesla Model 3 2025",
-    image: "/src/assets/Tesla Model 3 2025.avif",
+    image: "/Tesla Model 3 2025.avif",
     release: "January 2026",
     category: "Electric",
     rating: 5,
@@ -20,7 +20,7 @@ const upcomingCars = [
   {
     id: 2,
     name: "Toyota Supra GR 2025",
-    image: "/src/assets/Toyota Supra GR 2025.avif",
+    image: "/Toyota Supra GR 2025.avif",
     release: "March 2026",
     category: "Sports",
     rating: 4.5,
@@ -28,7 +28,7 @@ const upcomingCars = [
   {
     id: 3,
     name: "Range Rover Evoque 2026",
-    image: "/src/assets/Range Rover Evoque 2026.jpg",
+    image: "/Range Rover Evoque 2026.jpg",
     release: "June 2026",
     category: "Luxury SUV",
     rating: 5,

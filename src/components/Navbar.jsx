@@ -8,6 +8,7 @@ import {
   FaMoon,
   FaSun,
 } from "react-icons/fa";
+import { RiMenu2Fill } from "react-icons/ri";
 import { IoCarSportOutline, IoLogIn, IoLogOut } from "react-icons/io5";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../context/AuthContext";
@@ -43,23 +44,14 @@ const Navbar = () => {
         darkMode ? "bg-black text-white" : "bg-white text-gray-900"
       }`}
     >
-      <div className="navbar-start">
+      <div className="navbar-start ">
         <div className="dropdown">
-          <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M4 6h16M4 12h8m-8 6h16"
-              />
-            </svg>
+          <div
+            tabIndex={0}
+            role="button"
+            className="btn p-1 btn-ghost lg:hidden"
+          >
+            <RiMenu2Fill />
           </div>
           <ul
             tabIndex="-1"
@@ -72,7 +64,7 @@ const Navbar = () => {
         </div>
         <Link
           to="/"
-          className={`btn btn-ghost text-xl flex items-center gap-2 ${
+          className={`text-lg md:text-xl flex font-bold items-center  ${
             darkMode ? "text-yellow-400" : "text-yellow-500"
           }`}
         >
@@ -84,7 +76,7 @@ const Navbar = () => {
         <ul className="menu menu-horizontal px-1">{links}</ul>
       </div>
 
-      <div className="navbar-end flex items-center gap-3">
+      <div className="navbar-end flex items-center gap-1">
         {/* Dark/Light Mode Toggle */}
         <button
           onClick={toggleDarkMode}
@@ -136,7 +128,7 @@ const Navbar = () => {
             </ul>
           </div>
         ) : (
-          <div className="flex gap-2">
+          <div className="flex gap-1">
             <Link
               to="/auth/login"
               className="btn rounded-full btn-sm bg-yellow-500 hover:bg-yellow-400 text-white"

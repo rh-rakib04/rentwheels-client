@@ -8,19 +8,19 @@ import { Link } from "react-router";
 const Slider = () => {
   const slides = [
     {
-      image: "/src/assets/car1.jpeg",
+      image: "/car1.jpeg",
       title: "Drive Your Dream Car Today",
       subtitle: "Affordable, reliable, and always ready for the road.",
       button: "Browse Cars",
     },
     {
-      image: "/src/assets/car2.jpeg",
+      image: "/car2.jpeg",
       title: "Luxury Meets Performance",
       subtitle: "Experience comfort and style with RentWheels.",
       button: "Explore More",
     },
     {
-      image: "/src/assets/car3.jpeg",
+      image: "/car3.jpeg",
       title: "Adventure Awaits You",
       subtitle: "Book your next trip confidently — anywhere, anytime.",
       button: "Book Now",
