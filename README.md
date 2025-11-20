@@ -1,16 +1,124 @@
-# React + Vite
+# 🚗 RentWheels – Car Rental Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🔗 **Live Demo:** https://rent-wheels-526aa.web.app/
+🔗 **Backend API:** https://rentwheels-server-nine.vercel.app
 
-Currently, two official plugins are available:
+RentWheels is a modern, responsive car rental website built using React, Tailwind CSS, Firebase Authentication, Node.js, and MongoDB.
+The project allows users to browse cars, view details, book cars, manage bookings, and add their own listings.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project is created as part of a full-stack development assignment to practice component-based development, authentication, API integration, and UI/UX design.
 
-## React Compiler
+###📌 Features
+🔐 Authentication (Firebase)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+User Signup & Login
 
-## Expanding the ESLint configuration
+Password Reset
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Email saved globally using Context API
+
+Protected Routes
+
+###🚘 Car Functionalities
+
+View all cars
+
+Car details page
+
+Book a car
+
+Prevent double-booking
+
+Cancel booking
+
+User-specific bookings page
+
+###🧑‍💼 User Dashboard
+
+My Listings (Add / Edit / Delete cars)
+
+Display data based on logged-in user
+
+###🎨 Frontend UI
+
+Tailwind + DaisyUI design
+
+Light/Dark mode using ThemeContext
+
+Swiper Hero Slider
+
+AOS scroll animations
+
+Responsive design for all devices
+
+Custom 404 Page
+
+###🛠 Backend
+
+Node.js + Express REST API
+
+MongoDB database
+
+Firebase Admin token verification
+
+CRUD operations for cars & bookings
+
+###🖥️ Tech Stack
+#Frontend
+
+React.js
+
+React Router
+
+Context API
+
+Tailwind CSS
+
+DaisyUI
+
+Swiper.js
+
+AOS Animation Library
+
+#Backend
+
+Node.js
+
+Express.js
+
+MongoDB
+
+Firebase Admin
+
+###📚 Learning Outcomes
+
+Through this project, I learned:
+
+How to build a full-stack MERN + Firebase application
+
+How to use React Context (Auth & Theme)
+
+How to design reusable components
+
+How to implement CRUD operations
+
+How authentication works with backend verification
+
+How to deploy React apps to Firebase
+
+###🚀 Future Improvements
+
+Online payment integration
+
+Rating & review system
+
+Admin dashboard
+
+Car availability calendar
+
+Live chat support for users
+
+###🙌 Conclusion
+
+RentWheels is a complete full-stack car rental web application showcasing frontend design, backend APIs, real authentication, animations, and proper routing.
+This project demonstrates practical skills suitable for real-world development and academic submission.
