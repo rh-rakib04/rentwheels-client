@@ -1,4 +1,4 @@
-# 🚗 RentWheels – Car Rental Web Application
+*** 🚗 RentWheels – Car Rental Web Application
 
 🔗 **Live Demo:** https://rent-wheels-526aa.web.app/
 🔗 **Backend API:** https://rentwheels-server-nine.vercel.app
@@ -8,7 +8,7 @@ The project allows users to browse cars, view details, book cars, manage booking
 
 This project is created as part of a full-stack development assignment to practice component-based development, authentication, API integration, and UI/UX design.
 
-###📌 Features
+***📌 Features
 🔐 Authentication (Firebase)
 
 User Signup & Login
@@ -19,7 +19,7 @@ Email saved globally using Context API
 
 Protected Routes
 
-###🚘 Car Functionalities
+***🚘 Car Functionalities
 
 View all cars
 
@@ -33,13 +33,13 @@ Cancel booking
 
 User-specific bookings page
 
-###🧑‍💼 User Dashboard
+***🧑‍💼 User Dashboard
 
 My Listings (Add / Edit / Delete cars)
 
 Display data based on logged-in user
 
-###🎨 Frontend UI
+***🎨 Frontend UI
 
 Tailwind + DaisyUI design
 
@@ -63,7 +63,7 @@ Firebase Admin token verification
 
 CRUD operations for cars & bookings
 
-###🖥️ Tech Stack
+***🖥️ Tech Stack
 #Frontend
 
 React.js
@@ -90,7 +90,7 @@ MongoDB
 
 Firebase Admin
 
-###📚 Learning Outcomes
+***📚 Learning Outcomes
 
 Through this project, I learned:
 
@@ -106,7 +106,7 @@ How authentication works with backend verification
 
 How to deploy React apps to Firebase
 
-###🚀 Future Improvements
+***🚀 Future Improvements
 
 Online payment integration
 
@@ -118,7 +118,7 @@ Car availability calendar
 
 Live chat support for users
 
-###🙌 Conclusion
+***🙌 Conclusion
 
 RentWheels is a complete full-stack car rental web application showcasing frontend design, backend APIs, real authentication, animations, and proper routing.
 This project demonstrates practical skills suitable for real-world development and academic submission.
