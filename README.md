@@ -1,4 +1,6 @@
-# 🚗 RentWheels – Car Rental Web Application
+🚗 RentWheels – Car Rental Web Application
+
+![Home Page](/public/carSS.jpg)
 
 🔗 **Live Demo:** https://rent-wheels-526aa.web.app/
 🔗 **Backend API:** https://rentwheels-server-nine.vercel.app
@@ -8,7 +10,7 @@ The project allows users to browse cars, view details, book cars, manage booking
 
 This project is created as part of a full-stack development assignment to practice component-based development, authentication, API integration, and UI/UX design.
 
-###📌 Features
+📌 Features
 🔐 Authentication (Firebase)
 
 User Signup & Login
