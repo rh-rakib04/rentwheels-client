@@ -9,10 +9,17 @@ The project allows users to browse cars, view details, book cars, manage booking
 
 This project is created as part of a full-stack development assignment to practice component-based development, authentication, API integration, and UI/UX design.
 
+<<<<<<< HEAD
 ###📌 Features
 🔐 Authentication (Firebase)
 
 User Signup & Login
+=======
+---
+![Home Page](/public/carSS.jpg)
+---
+## 📌 **Features**
+>>>>>>> 018e7c299685d0833a5d1461dad3be79e4799095
 
 Password Reset
 
@@ -72,6 +79,39 @@ Protected Routes
 - Firebase Admin  
 
 ---
+
+###🚀 How to Run Locally
+1️⃣ Clone the Repository
+git clone https://github.com/your-username/rentwheels-client.git
+cd rentwheels-client
+
+2️⃣ Install Frontend Dependencies
+npm install
+
+3️⃣ Setup Firebase Environment
+
+Create a .env file in the root directory:
+
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+
+4️⃣ Start Frontend
+npm run dev
+
+Backend Setup
+git clone https://github.com/your-username/rentwheels-server.git
+cd rentwheels-server
+npm install
+
+Create a .env file:
+
+PORT=5000
+MONGODB_URI=your_mongodb_uri
+FIREBASE_SERVICE_ACCOUNT=your_firebase_admin_credentials
+
+Start server:
+npm start
 
 ## 📚 **Learning Outcomes**
 
