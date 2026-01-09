@@ -6,11 +6,12 @@ import MyListings from "../pages/MyListings";
 import MyBookings from "../pages/MyBookings";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
-import PrivateRoute from "./PrivateRoute";
 import BrowseCars from "../pages/BrowserCar";
 import CarDetails from "../components/CarDetails";
 import ForgetPassword from "../pages/Auth/ForgetPassword";
 import NotFound from "../pages/NotFound";
+import About from "../pages/About";
+import Contract from "../pages/Contract";
 
 const router = createBrowserRouter([
   {
@@ -26,36 +27,28 @@ const router = createBrowserRouter([
         element: <BrowseCars />,
       },
       {
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/contact",
+        element: <Contract />,
+      },
+      {
         path: "/add-car",
-        element: (
-          <PrivateRoute>
-            <AddCar />
-          </PrivateRoute>
-        ),
+        element: <AddCar />,
       },
       {
         path: "/cars/:id",
-        element: (
-          <PrivateRoute>
-            <CarDetails />
-          </PrivateRoute>
-        ),
+        element: <CarDetails />,
       },
       {
         path: "/my-listings",
-        element: (
-          <PrivateRoute>
-            <MyListings />
-          </PrivateRoute>
-        ),
+        element: <MyListings />,
       },
       {
         path: "/my-bookings",
-        element: (
-          <PrivateRoute>
-            <MyBookings />
-          </PrivateRoute>
-        ),
+        element: <MyBookings />,
       },
       {
         path: "/auth/login",

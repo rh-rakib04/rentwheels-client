@@ -5,6 +5,7 @@ import WhyRentWithUs from "../components/Home/WhyRentWithUs";
 import TopRatedCars from "../components/Home/TopRatedCars";
 import CustomerTestimonials from "../components/Home/CustomerTestimonals";
 import UpcomingCars from "../components/Home/UpcomingCars";
+import HowItWorks from "../components/Home/HowItWorks";
 
 const featuredCarsPromise = fetch(
   "https://rentwheels-server-nine.vercel.app/featured-cars"
@@ -15,6 +16,7 @@ const Home = () => {
       <Slider />
       <FeaturedCars featuredCarsPromise={featuredCarsPromise} />
       <WhyRentWithUs />
+      <HowItWorks />
       <TopRatedCars featuredCarsPromise={featuredCarsPromise} />
       <CustomerTestimonials />
       <UpcomingCars />

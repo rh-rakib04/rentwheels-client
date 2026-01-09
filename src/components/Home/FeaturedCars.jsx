@@ -1,5 +1,5 @@
 import React, { use, useState, useEffect } from "react";
-import { FaCarSide } from "react-icons/fa";
+import { FaCarSide, FaSearch } from "react-icons/fa";
 import { Link } from "react-router";
 import CarCard from "../CarCard";
 import AOS from "aos";
@@ -17,7 +17,7 @@ const FeaturedCars = ({ featuredCarsPromise }) => {
   return (
     <section className="w-11/12 mx-auto my-16">
       {/* Section Header */}
-      <div className="text-center mb-10" data-aos="fade-down">
+      <div className="text-center mb-10">
         <h1 className="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3 text-yellow-500 dark:text-yellow-400">
           <FaCarSide className="text-yellow-500 dark:text-yellow-400" />
           Featured Cars
@@ -29,7 +29,8 @@ const FeaturedCars = ({ featuredCarsPromise }) => {
       </div>
 
       {/* Search Bar */}
-      <div className="flex justify-center mb-8" data-aos="fade-up">
+      <div className="flex justify-center items-center mb-8 gap-2">
+        <FaSearch size={30} />
         <input
           type="text"
           placeholder="Search car by name..."

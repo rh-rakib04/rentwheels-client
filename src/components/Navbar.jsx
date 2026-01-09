@@ -1,150 +1,180 @@
 import React, { useContext } from "react";
 import {
-  FaBookmark,
   FaCarSide,
   FaHome,
-  FaListAlt,
-  FaPlusCircle,
   FaMoon,
   FaSun,
+  FaInfoCircle,
+  FaEnvelope,
 } from "react-icons/fa";
 import { RiMenu2Fill } from "react-icons/ri";
-import { IoCarSportOutline, IoLogIn, IoLogOut } from "react-icons/io5";
+import { IoCarSportOutline } from "react-icons/io5";
 import { Link, NavLink } from "react-router";
 import { AuthContext } from "../context/AuthContext";
 
 const Navbar = () => {
-  // Get auth + theme state from AuthContext
   const { user, signOutUser, darkMode, toggleDarkMode } =
     useContext(AuthContext);
 
-  const links = (
-    <>
-      <NavLink className="p-3 flex gap-1 items-center" to="/">
-        <FaHome /> Home
-      </NavLink>
-      <NavLink className="p-3 flex gap-1 items-center" to="/add-car">
-        <FaPlusCircle /> Add Car
-      </NavLink>
-      <NavLink className="p-3 flex gap-1 items-center" to="/my-listings">
-        <FaListAlt /> My Listings
-      </NavLink>
-      <NavLink className="p-3 flex gap-1 items-center" to="/my-bookings">
-        <FaBookmark /> My Bookings
-      </NavLink>
-      <NavLink className="p-3 flex gap-1 items-center" to="/browse-cars">
-        <FaCarSide /> Browse Cars
-      </NavLink>
-    </>
-  );
+  const navLinkClass = ({ isActive }) =>
+    `flex items-center gap-2 px-3 py-2 rounded-lg transition-all
+     ${
+       isActive
+         ? "text-yellow-400 font-semibold bg-yellow-400/10"
+         : "hover:text-yellow-400 hover:bg-yellow-400/10"
+     }`;
 
   return (
-    <div
-      className={`navbar shadow-sm transition-colors duration-300 ${
-        darkMode ? "bg-black text-white" : "bg-white text-gray-900"
+    <header
+      className={`sticky top-0 z-50 backdrop-blur-xl border-b transition-all
+      ${
+        darkMode
+          ? "bg-black/60 text-white border-white/10"
+          : "bg-white/70 text-gray-900 border-black/10"
       }`}
     >
-      <div className="navbar-start ">
-        <div className="dropdown">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn p-1 btn-ghost lg:hidden"
+      <div className="navbar max-w-7xl mx-auto px-4">
+
+        {/* LEFT: LOGO */}
+        <div className="navbar-start">
+          <Link
+            to="/"
+            className="flex items-center gap-2 text-xl font-bold text-yellow-400"
           >
-            <RiMenu2Fill />
-          </div>
-          <ul
-            tabIndex="-1"
-            className={`menu menu-sm dropdown-content rounded-box z-10 mt-3 w-52 p-2 shadow transition-colors duration-300 ${
-              darkMode ? "bg-slate-800 text-white" : "bg-white text-gray-900"
-            }`}
-          >
-            {links}
-          </ul>
+            <IoCarSportOutline size={26} />
+            <span className="tracking-wide">RentWheels</span>
+          </Link>
         </div>
-        <Link
-          to="/"
-          className={`text-lg md:text-xl flex font-bold items-center  ${
-            darkMode ? "text-yellow-400" : "text-yellow-500"
-          }`}
-        >
-          <IoCarSportOutline /> RentWheels
-        </Link>
-      </div>
 
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">{links}</ul>
-      </div>
+        {/* CENTER: DESKTOP NAV */}
+        <div className="navbar-center hidden lg:flex">
+          <nav className="flex gap-1">
+            <NavLink to="/" className={navLinkClass}>
+              <FaHome /> Home
+            </NavLink>
+            <NavLink to="/browse-cars" className={navLinkClass}>
+              <FaCarSide /> Browse Cars
+            </NavLink>
+            <NavLink to="/about" className={navLinkClass}>
+              <FaInfoCircle /> About
+            </NavLink>
+            <NavLink to="/contact" className={navLinkClass}>
+              <FaEnvelope /> Contact
+            </NavLink>
+          </nav>
+        </div>
 
-      <div className="navbar-end flex items-center gap-1">
-        {/* Dark/Light Mode Toggle */}
-        <button
-          onClick={toggleDarkMode}
-          className={`btn btn-ghost btn-circle text-xl transition-colors duration-300 ${
-            darkMode ? "text-yellow-400" : "text-yellow-500"
-          }`}
-          title="Toggle Dark/Light Mode"
-        >
-          {darkMode ? <FaSun /> : <FaMoon />}
-        </button>
+        {/* RIGHT: ACTIONS */}
+        <div className="navbar-end gap-2">
 
-        {/* User Login / Avatar */}
-        {user ? (
-          <div className="dropdown dropdown-end z-50">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
-              <div className="w-9 border-2 border-gray-300 rounded-full">
-                <img
-                  alt="user avatar"
-                  referrerPolicy="no-referrer"
-                  src={
-                    user.photoURL ||
-                    "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"
-                  }
-                />
+          {/* THEME TOGGLE */}
+          <button
+            onClick={toggleDarkMode}
+            className="btn btn-ghost btn-circle text-yellow-400"
+          >
+            {darkMode ? <FaSun size={18} /> : <FaMoon size={18} />}
+          </button>
+
+          {/* AUTH - DESKTOP */}
+          <div className="hidden lg:flex items-center gap-2">
+            {user ? (
+              <div className="dropdown dropdown-end">
+                <div tabIndex={0} className="btn btn-ghost btn-circle avatar">
+                  <div className="w-9 rounded-full ring ring-yellow-400 ring-offset-2 ring-offset-base-100">
+                    <img src={user.photoURL} alt="user" />
+                  </div>
+                </div>
+                <ul className="menu dropdown-content mt-3 w-56 rounded-xl bg-base-100 shadow-lg">
+                  <li className="font-semibold">{user.displayName}</li>
+                  <li className="text-xs opacity-70">{user.email}</li>
+                  <li>
+                    <button
+                      onClick={signOutUser}
+                      className="btn btn-sm btn-warning mt-2"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </ul>
               </div>
+            ) : (
+              <>
+                <Link to="/auth/login" className="btn btn-sm btn-warning">
+                  Login
+                </Link>
+                <Link to="/auth/register" className="btn btn-sm btn-outline btn-warning">
+                  Register
+                </Link>
+              </>
+            )}
+          </div>
+
+          {/* MOBILE MENU */}
+          <div className="dropdown dropdown-end lg:hidden">
+            <div tabIndex={0} className="btn btn-ghost">
+              <RiMenu2Fill size={22} />
             </div>
+
             <ul
-              tabIndex="-1"
-              className={`menu menu-sm dropdown-content rounded-box z-50 mt-3 w-52 p-2 shadow transition-colors duration-300 ${
-                darkMode ? "bg-slate-800 text-white" : "bg-white text-gray-900"
+              tabIndex={0}
+              className={`menu dropdown-content mt-3 w-64 rounded-xl shadow-lg backdrop-blur-xl
+              ${
+                darkMode
+                  ? "bg-slate-900/95 text-white"
+                  : "bg-white/95 text-gray-900"
               }`}
             >
-              <div className="pb-3 border-b border-gray-200">
-                <li className="text-sm font-bold">{user.displayName}</li>
-                <li className="text-xs">{user.email}</li>
-              </div>
-              <li>
-                <button
-                  onClick={signOutUser}
-                  className="btn btn-xs text-left bg-yellow-500 hover:bg-yellow-400 text-white"
-                >
-                  <IoLogOut /> Logout
+              <NavLink to="/" className={navLinkClass}>
+                <FaHome /> Home
+              </NavLink>
+              <NavLink to="/browse-cars" className={navLinkClass}>
+                <FaCarSide /> Browse Cars
+              </NavLink>
+              <NavLink to="/about" className={navLinkClass}>
+                <FaInfoCircle /> About
+              </NavLink>
+              <NavLink to="/contact" className={navLinkClass}>
+                <FaEnvelope /> Contact
+              </NavLink>
+
+              <li className="mt-2">
+                <button onClick={toggleDarkMode} className="flex gap-2">
+                  {darkMode ? <FaSun /> : <FaMoon />}
+                  Toggle Theme
                 </button>
               </li>
+
+              {user ? (
+                <>
+                  <li className="font-semibold mt-2">{user.displayName}</li>
+                  <li className="text-xs opacity-70">{user.email}</li>
+                  <li>
+                    <button
+                      onClick={signOutUser}
+                      className="btn btn-sm btn-warning mt-2"
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <Link to="/auth/login" className="btn btn-sm btn-warning mt-2">
+                    Login
+                  </Link>
+                  <Link
+                    to="/auth/register"
+                    className="btn btn-sm btn-outline btn-warning"
+                  >
+                    Register
+                  </Link>
+                </>
+              )}
             </ul>
           </div>
-        ) : (
-          <div className="flex gap-1">
-            <Link
-              to="/auth/login"
-              className="btn rounded-full btn-sm bg-yellow-500 hover:bg-yellow-400 text-white"
-            >
-              Login
-            </Link>
-            <Link
-              to="/auth/register"
-              className="btn rounded-full btn-sm bg-yellow-500 hover:bg-yellow-400 text-white"
-            >
-              Register
-            </Link>
-          </div>
-        )}
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 
