@@ -1,92 +1,80 @@
 import React from "react";
+import { motion } from "framer-motion";
 import {
   FaHandshake,
   FaCarAlt,
   FaMoneyBillWave,
   FaHeadset,
-  FaLightbulb,
 } from "react-icons/fa";
 
+const features = [
+  {
+    id: 1,
+    title: "Wide Car Selection",
+    desc: "From agile city cars to luxury SUVs, find the perfect ride for any occasion.",
+    icon: <FaCarAlt />,
+  },
+  {
+    id: 2,
+    title: "Best Price Guarantee",
+    desc: "Premium experience shouldn't mean premium prices. We match any local rate.",
+    icon: <FaMoneyBillWave />,
+  },
+  {
+    id: 3,
+    title: "24/7 Elite Support",
+    desc: "Our dedicated concierge team is always one call away, anywhere, anytime.",
+    icon: <FaHeadset />,
+  },
+  {
+    id: 4,
+    title: "Trusted by Thousands",
+    desc: "Join a community of thousands of drivers who choose RentWheels for quality.",
+    icon: <FaHandshake />,
+  },
+];
+
 const WhyRentWithUs = () => {
-  const features = [
-    {
-      id: 1,
-      title: "Wide Car Selection",
-      desc: "Choose from economy to luxury — we’ve got cars for every need and budget.",
-      icon: <FaCarAlt />,
-      color: "bg-yellow-500/10 text-yellow-500",
-      aos: "fade-up",
-    },
-    {
-      id: 2,
-      title: "Best Price Guarantee",
-      desc: "We offer the most affordable rental prices without compromising quality.",
-      icon: <FaMoneyBillWave />,
-      color: "bg-green-500/10 text-green-500",
-      aos: "fade-up",
-    },
-    {
-      id: 3,
-      title: "24/7 Customer Support",
-      desc: "Our friendly support team is always here to help you on the road.",
-      icon: <FaHeadset />,
-      color: "bg-blue-500/10 text-blue-500",
-      aos: "fade-up",
-    },
-    {
-      id: 4,
-      title: "Trusted by Thousands",
-      desc: "Thousands of happy customers rely on RentWheels for their trips.",
-      icon: <FaHandshake />,
-      color: "bg-purple-500/10 text-purple-500",
-      aos: "fade-up",
-    },
-  ];
-
   return (
-    <section
-      className="w-11/12 mx-auto my-20 text-center"
-      data-aos="fade-up"
-      data-aos-duration="800"
-    >
-      {/* Heading */}
-      <div className="mb-12" data-aos="fade-down">
-        <h2 className="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3 text-yellow-500 dark:text-yellow-400">
-          <FaLightbulb className="text-yellow-500 dark:text-yellow-400" /> Why
-          Rent With Us
-        </h2>
-        <p
-          className="text-gray-600 dark:text-gray-400 mt-2 text-sm md:text-base max-w-2xl mx-auto"
-          data-aos="fade-up"
-        >
-          Experience hassle-free car rentals with unbeatable prices and trusted
-          service.
-        </p>
-      </div>
+    <section className="relative py-10  transition-colors duration-500 overflow-hidden">
+      {/* Background Decorative Glow */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-yellow-500/10 dark:bg-yellow-400/5 blur-[150px] rounded-full pointer-events-none" />
 
-      {/* Features Grid */}
-      <div
-        className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
-        data-aos="zoom-in-up"
-      >
-        {features.map((f, i) => (
-          <div
-            key={f.id}
-            data-aos={f.aos}
-            data-aos-delay={i * 150}
-            className="group bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 flex flex-col items-center justify-center hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
-          >
-            <div
-              className={`text-4xl mb-4 p-4 rounded-full ${f.color} group-hover:scale-110 transition-transform duration-300`}
-            >
-              {f.icon}
+      <div className="w-11/12 max-w-7xl mx-auto">
+        <div className=" mb-16 text-center">
+          <motion.div>
+            <h2 className="text-4xl md:text-6xl font-black uppercase italic tracking-tighter leading-none ">
+              Why <span className="text-yellow-500 dark:text-yellow-400">Rent</span> With Us?
+            </h2>
+           
+          </motion.div>
+
+          <motion.p className="text-gray-600 dark:text-gray-400 mx-auto max-w-md italic font-light">
+            We provide the freedom of the open road with unmatched reliability and style.
+          </motion.p>
+           <div className="h-1.5 w-24 mx-auto bg-yellow-500 dark:bg-yellow-400 mt-6 rounded-full" />
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((f, i) => (
+            <div key={f.id} className="group relative bg-gray-50 dark:bg-zinc-900/40 border border-gray-200 dark:border-white/5 p-8 rounded-[2rem] overflow-hidden hover:border-yellow-500 dark:hover:border-yellow-400/30 transition-all duration-500">
+              <div className="relative z-10">
+                <div className="text-4xl text-yellow-600 dark:text-yellow-400 mb-6 inline-block p-4 bg-white dark:bg-black rounded-2xl shadow-sm dark:shadow-[0_0_15px_rgba(250,204,21,0.1)] transition-transform duration-500 group-hover:-rotate-6">
+                  {f.icon}
+                </div>
+                <h3 className="font-bold text-xl mb-3 text-gray-900 dark:text-white uppercase tracking-tight group-hover:text-yellow-600 dark:group-hover:text-yellow-400 transition-colors">
+                  {f.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-500 text-sm leading-relaxed transition-colors">
+                  {f.desc}
+                </p>
+              </div>
+              <div className="absolute -bottom-4 -right-2 text-9xl font-black text-gray-200/50 dark:text-white/[0.03] pointer-events-none">
+                {i + 1}
+              </div>
             </div>
-            <h3 className="font-semibold text-lg mb-2 text-gray-800 dark:text-gray-100">
-              {f.title}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-400 text-sm">{f.desc}</p>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </section>
   );

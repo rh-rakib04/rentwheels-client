@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+
 import { FaTrash, FaEdit, FaCarSide, FaSpinner } from "react-icons/fa";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../context/AuthContext";
 
 const MyListings = () => {
   const { user, darkMode } = useContext(AuthContext);

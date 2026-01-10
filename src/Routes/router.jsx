@@ -1,9 +1,6 @@
 import { createBrowserRouter } from "react-router";
 import MainLayout from "../Layout/MainLayout";
 import Home from "../pages/Home";
-import AddCar from "../pages/AddCar";
-import MyListings from "../pages/MyListings";
-import MyBookings from "../pages/MyBookings";
 import Login from "../pages/Auth/Login";
 import Register from "../pages/Auth/Register";
 import BrowseCars from "../pages/BrowserCar";
@@ -12,6 +9,10 @@ import ForgetPassword from "../pages/Auth/ForgetPassword";
 import NotFound from "../pages/NotFound";
 import About from "../pages/About";
 import Contract from "../pages/Contract";
+import Overview from "../components/Dashboard/Home/Overview";
+import MyListings from "../components/Dashboard/MyListings";
+import MyBookings from "../components/Dashboard/MyBookings";
+import AddCar from "../components/Dashboard/AddCar";
 
 const router = createBrowserRouter([
   {
@@ -34,22 +35,12 @@ const router = createBrowserRouter([
         path: "/contact",
         element: <Contract />,
       },
-      {
-        path: "/add-car",
-        element: <AddCar />,
-      },
+      
       {
         path: "/cars/:id",
         element: <CarDetails />,
       },
-      {
-        path: "/my-listings",
-        element: <MyListings />,
-      },
-      {
-        path: "/my-bookings",
-        element: <MyBookings />,
-      },
+      
       {
         path: "/auth/login",
         element: <Login />,
@@ -68,5 +59,25 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/dashboard",
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element:<Overview/>
+      },{
+        path: "my-listings",
+        element: <MyListings />,
+      },
+      {
+        path: "my-bookings",
+        element: <MyBookings />,
+      },{
+        path: "add-car",
+        element: <AddCar />,
+      },
+    ]
+  }
 ]);
 export default router;

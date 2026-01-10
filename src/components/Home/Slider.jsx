@@ -43,7 +43,7 @@ const Slider = () => {
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
             <div
-              className="relative h-full w-full bg-cover bg-center transition-transform duration-[2000ms] ease-out hover:scale-105"
+              className="relative h-full w-full bg-cover bg-center transition-transform duration-[2000ms] ease-out hover:scale-102"
               style={{ backgroundImage: `url(${slide.image})` }}
             >
               {/* Requirement: Dark Mode/Contrast Overlay */}
@@ -53,18 +53,18 @@ const Slider = () => {
               <div className="relative z-10 flex flex-col items-start justify-center h-full px-6 md:px-20 text-white max-w-4xl">
                 {/* Text Animation Classes */}
                 <div className="animate-fadeInUp">
-                  <h1 className="text-4xl md:text-7xl font-extrabold mb-4 tracking-tight leading-[1.1]">
+                  <h1 className="text-4xl md:text-7xl font-black italic tracking-tighter uppercase leading-[1.1]">
                     {slide.title}
                   </h1>
-                  <p className="text-lg md:text-2xl text-slate-200 mb-8 max-w-xl font-light">
+                  <p className="text-lg md:text-2xl text-slate-200 mb-8  italic tracking-tighter max-w-xl font-light">
                     {slide.subtitle}
                   </p>
                   
                   {/* CTA Button */}
-                  <div className="flex gap-4">
+                  <div className="flex gap-2">
                     <Link
                       to={slide.link}
-                      className="group relative inline-flex items-center justify-center bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-bold py-4 px-10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 shadow-xl"
+                      className="group relative inline-flex items-center justify-center bg-yellow-400 hover:bg-yellow-500 text-slate-950 font-bold py-2 md:py-4 px-5 md:px-10 rounded-xl transition-all duration-300 transform hover:-translate-y-1 shadow-xl"
                     >
                       {slide.button}
                       <svg 

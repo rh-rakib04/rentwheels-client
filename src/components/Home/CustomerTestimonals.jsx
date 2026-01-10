@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { FaQuoteLeft, FaStar } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { createPortal } from "react-dom"; // Essential for visibility
+import { motion, AnimatePresence } from "framer-motion";
+import { FaStar, FaQuoteLeft, FaTimes } from "react-icons/fa";
 import toast from "react-hot-toast";
 
 const testimonials = [
@@ -8,206 +9,174 @@ const testimonials = [
     id: 1,
     name: "Ayesha Rahman",
     photo: "https://i.ibb.co/mD4S5j8/profile1.jpg",
-    review:
-      "RentWheels made my weekend trip absolutely seamless. The booking was quick, the car was spotless, and support was fantastic!",
+    review: "RentWheels made my weekend trip absolutely seamless. The booking was quick, the car was spotless, and support was fantastic!",
     rating: 5,
   },
   {
     id: 2,
     name: "Md. Arif Hossain",
     photo: "https://i.ibb.co/d54D9Kn/profile2.jpg",
-    review:
-      "Super easy to rent and return. I love how transparent the pricing is. Definitely my go-to for any future trips!",
-    rating: 4.5,
+    review: "Super easy to rent and return. Transparent pricing and smooth experience. Definitely my go-to service from now on.",
+    rating: 5,
   },
   {
     id: 3,
     name: "Sarah Islam",
     photo: "https://i.ibb.co/5GFWbpc/profile3.jpg",
-    review:
-      "From booking to drop-off, everything was effortless. Customer service was quick and polite. Highly recommended!",
-    rating: 5,
-  },
-  {
-    id: 4,
-    name: "Rafiq Khan",
-    photo: "https://i.ibb.co/3fhC5pF/profile4.jpg",
-    review:
-      "Amazing experience! Cars are well-maintained and the booking process is super smooth.",
+    review: "Everything from booking to drop-off was effortless. Highly recommended for anyone looking for premium cars!",
     rating: 5,
   },
 ];
 
 const CustomerTestimonials = () => {
   const [showForm, setShowForm] = useState(false);
-  const [formData, setFormData] = useState({
-    name: "",
-    review: "",
-    rating: 5,
-  });
+  const [formData, setFormData] = useState({ name: "", review: "", rating: 5 });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // 1. Prevent background scrolling when modal is open
+  useEffect(() => {
+    if (showForm) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => { document.body.style.overflow = "unset"; };
+  }, [showForm]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.review) {
-      toast.error("Please fill in all fields!");
-      return;
-    }
-    testimonials.push({
-      id: testimonials.length + 1,
-      name: formData.name,
-      photo: "https://i.ibb.co/5GFWbpc/profile3.jpg",
-      review: formData.review,
-      rating: parseFloat(formData.rating),
-    });
-    toast.success("Thank you for sharing your experience!");
-    setFormData({ name: "", review: "", rating: 5 });
+    toast.success("Thanks for your feedback!");
     setShowForm(false);
+    setFormData({ name: "", review: "", rating: 5 });
   };
 
   return (
-    <section className="w-11/12 mx-auto my-20 text-center relative overflow-hidden">
-      {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-3xl md:text-4xl font-bold flex items-center justify-center gap-3 text-yellow-500 dark:text-yellow-400">
-          <FaQuoteLeft className="text-yellow-500 dark:text-yellow-400" />
-          What Our Customers Say
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2 text-sm md:text-base max-w-xl mx-auto">
-          Real experiences from our trusted RentWheels users — here’s why they
-          keep coming back!
-        </p>
-      </div>
+    <section className="relative py-24  overflow-hidden">
+      {/* Ambient background glows */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-yellow-500/5 blur-[120px] rounded-full pointer-events-none" />
+      
+      <div className="relative w-11/12 max-w-7xl mx-auto text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase mb-4">
+            Trusted by <span className="text-yellow-400">Customers</span>
+          </h2>
+          <p className="text-gray-400 max-w-xl mx-auto font-light italic">
+            Real stories from our premium community of drivers.
+          </p>
+        </motion.div>
 
-      {/* Marquee Scroll */}
-      <motion.div
-        className="flex gap-6 w-full"
-        style={{ display: "flex", width: "max-content" }}
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{
-          x: {
-            repeat: Infinity,
-            repeatType: "loop",
-            duration: 40,
-            ease: "linear",
-          },
-        }}
-      >
-        {testimonials.concat(testimonials).map((testimonial, index) => (
-          <div
-            key={index}
-            className="min-w-[300px] bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md hover:shadow-xl transition-all duration-300 text-left"
+        {/* Marquee Container */}
+        <div className="mt-20 relative flex overflow-hidden group">
+          <motion.div
+            className="flex gap-8 w-max px-4"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 30, ease: "linear", repeat: Infinity }}
+            whileHover={{ animationPlayState: "paused" }}
           >
-            <div className="flex items-center gap-4 mb-4">
-              <img
-                src={testimonial.photo}
-                alt={testimonial.name}
-                className="w-14 h-14 rounded-full object-cover border-2 border-yellow-500"
-              />
-              <div>
-                <h3 className="font-semibold text-lg text-gray-800 dark:text-white">
-                  {testimonial.name}
-                </h3>
-                <div className="flex text-yellow-500">
-                  {[...Array(Math.floor(testimonial.rating))].map((_, i) => (
-                    <FaStar key={i} />
-                  ))}
-                  {testimonial.rating % 1 !== 0 && (
-                    <FaStar className="opacity-50" />
-                  )}
+            {[...testimonials, ...testimonials].map((t, i) => (
+              <div
+                key={i}
+                className="w-[350px] bg-base-900/40 backdrop-blur-md border border-yellow-200 rounded-3xl p-8 text-left"
+              >
+                <FaQuoteLeft className="text-yellow-400/20 text-4xl mb-4" />
+                <p className="text-gray-500 italic mb-6 leading-relaxed">“{t.review}”</p>
+                <div className="flex items-center gap-4">
+                  <img src={t.photo} alt={t.name} className="w-12 h-12 rounded-full border-2 border-yellow-400" />
+                  <div>
+                    <h3 className="font-bold text-white text-sm uppercase">{t.name}</h3>
+                    <div className="flex text-yellow-400 text-xs">
+                      {[...Array(5)].map((_, idx) => <FaStar key={idx} />)}
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-            <p className="text-gray-600 dark:text-gray-300 italic text-sm leading-relaxed">
-              “{testimonial.review}”
-            </p>
-          </div>
-        ))}
-      </motion.div>
+            ))}
+          </motion.div>
+        </div>
 
-      {/* Call to Action */}
-      <div className="text-center mt-12">
         <button
           onClick={() => setShowForm(true)}
-          className="bg-yellow-500 text-white dark:text-black px-8 py-2 rounded-full font-semibold hover:bg-yellow-400 dark:hover:bg-yellow-300 shadow-md transition-all duration-300"
+          className="mt-16 px-12 py-4 rounded-full bg-yellow-400 text-black font-black uppercase tracking-widest hover:bg-yellow-300 transition-all shadow-lg shadow-yellow-400/20 active:scale-95"
         >
           Share Your Experience
         </button>
       </div>
 
-      {/* Modal Form */}
-      {showForm && (
-        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl w-11/12 md:w-1/2 shadow-lg relative">
-            <button
-              onClick={() => setShowForm(false)}
-              className="absolute top-4 right-4 text-gray-600 dark:text-gray-300 font-bold text-xl"
-            >
-              &times;
-            </button>
-            <h2 className="text-2xl font-bold mb-4 text-yellow-500 dark:text-yellow-400">
-              Share Your Experience
-            </h2>
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div>
-                <label className="block mb-1 text-gray-700 dark:text-gray-300 font-medium">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-yellow-400 focus:outline-none"
-                  placeholder="Your name"
-                  required
+      {/* 2. THE PORTAL FIX: Renders outside the MainLayout DOM tree */}
+      {showForm && createPortal(
+        <div className="fixed inset-0 flex items-center justify-center p-4" style={{ zIndex: 999999 }}>
+          <AnimatePresence>
+            {showForm && (
+              <>
+                {/* Backdrop Blur */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setShowForm(false)}
+                  className="absolute inset-0 bg-black/90 backdrop-blur-xl"
                 />
-              </div>
-              <div>
-                <label className="block mb-1 text-gray-700 dark:text-gray-300 font-medium">
-                  Review
-                </label>
-                <textarea
-                  name="review"
-                  value={formData.review}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-yellow-400 focus:outline-none"
-                  rows="4"
-                  placeholder="Write your experience..."
-                  required
-                />
-              </div>
-              <div>
-                <label className="block mb-1 text-gray-700 dark:text-gray-300 font-medium">
-                  Rating
-                </label>
-                <select
-                  name="rating"
-                  value={formData.rating}
-                  onChange={handleInputChange}
-                  className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-yellow-400 focus:outline-none"
-                  required
+
+                {/* Modal Box */}
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0, y: 50 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.8, opacity: 0, y: 50 }}
+                  className="relative w-full max-w-lg bg-zinc-900 border border-white/10 rounded-[2.5rem] p-8 md:p-12 shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <option value="5">5 - Excellent</option>
-                  <option value="4">4 - Good</option>
-                  <option value="3">3 - Average</option>
-                  <option value="2">2 - Poor</option>
-                  <option value="1">1 - Terrible</option>
-                </select>
-              </div>
-              <button
-                type="submit"
-                className="w-full py-2 bg-yellow-500 hover:bg-yellow-400 dark:hover:bg-yellow-300 text-white dark:text-black font-semibold rounded-lg transition-all duration-300"
-              >
-                Submit
-              </button>
-            </form>
-          </div>
-        </div>
+                  <button
+                    onClick={() => setShowForm(false)}
+                    className="absolute top-8 right-8 text-gray-500 hover:text-white transition-colors"
+                  >
+                    <FaTimes size={24} />
+                  </button>
+
+                  <h2 className="text-3xl font-black uppercase italic text-yellow-400 mb-6">
+                    Post a <span className="text-white">Review</span>
+                  </h2>
+
+                  <form onSubmit={handleSubmit} className="space-y-6 text-left">
+                    <div>
+                      <label className="text-[10px] uppercase font-bold tracking-widest text-gray-500 ml-1 mb-2 block">Your Name</label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full bg-black/50 border border-white/5 rounded-2xl px-5 py-4 text-white focus:border-yellow-400 outline-none transition-all"
+                        placeholder="John Doe"
+                        value={formData.name}
+                        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label className="text-[10px] uppercase font-bold tracking-widest text-gray-500 ml-1 mb-2 block">Review Message</label>
+                      <textarea
+                        rows="4"
+                        required
+                        className="w-full bg-black/50 border border-white/5 rounded-2xl px-5 py-4 text-white focus:border-yellow-400 outline-none transition-all resize-none"
+                        placeholder="Tell us about the car and the service..."
+                        value={formData.review}
+                        onChange={(e) => setFormData({ ...formData, review: e.target.value })}
+                      />
+                    </div>
+
+                    <button
+                      type="submit"
+                      className="w-full py-5 rounded-2xl bg-yellow-400 text-black font-black uppercase tracking-widest hover:bg-yellow-300 transition-all shadow-xl shadow-yellow-400/10"
+                    >
+                      Submit Experience
+                    </button>
+                  </form>
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+        </div>,
+        document.body
       )}
     </section>
   );

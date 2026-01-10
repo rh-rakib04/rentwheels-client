@@ -9,7 +9,7 @@ import {
 
 const About = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-white">
+    <div className="min-h-screen bg-base-900 ">
 
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-slate-200 dark:border-slate-800">
@@ -17,7 +17,7 @@ const About = () => {
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-bold mb-4"
+            className="text-4xl md:text-5xl font-black uppercase  tracking-tighter italic mb-4"
           >
             About <span className="text-yellow-500">RentWheels</span>
           </motion.h1>
@@ -56,7 +56,7 @@ const About = () => {
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 gap-6"
+            className="grid grid-cols-2 gap-6 "
           >
             {[
               {
@@ -83,13 +83,13 @@ const About = () => {
               <div
                 key={i}
                 className="rounded-2xl border border-slate-200 dark:border-slate-800
-                bg-white dark:bg-slate-900 p-6
+                bg-base dark:bg-base-900 p-6
                 hover:border-yellow-500 transition"
               >
                 <div className="text-yellow-500 text-2xl mb-3">
                   {item.icon}
                 </div>
-                <h3 className="font-semibold mb-1">{item.title}</h3>
+                <h3 className="font-semibold mb-1 text-yellow-500">{item.title}</h3>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
                   {item.desc}
                 </p>
@@ -100,7 +100,7 @@ const About = () => {
       </section>
 
       {/* TECH STACK */}
-      <section className="bg-slate-50 dark:bg-slate-900/40 border-y border-slate-200 dark:border-slate-800">
+      <section className="bg-base-50 dark:bg-base-900/40 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-4 py-20 text-center">
           <h2 className="text-3xl font-semibold mb-10">
             Technology Stack
@@ -121,7 +121,7 @@ const About = () => {
                 key={tech}
                 className="px-5 py-2 rounded-full text-sm font-medium
                 border border-slate-300 dark:border-slate-700
-                bg-white dark:bg-slate-950
+                bg-base-900
                 hover:border-yellow-500 transition"
               >
                 {tech}

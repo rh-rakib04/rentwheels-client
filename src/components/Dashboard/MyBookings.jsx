@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+
 import Swal from "sweetalert2";
 import { FaTrashAlt, FaCarSide, FaDollarSign, FaClock } from "react-icons/fa";
+import { AuthContext } from "../../context/AuthContext";
 
 const MyBookings = () => {
   const { user, darkMode } = useContext(AuthContext);
