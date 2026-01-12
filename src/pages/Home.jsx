@@ -12,6 +12,7 @@ import FinalCTA from "../components/Home/FinalCTA";
 const featuredCarsPromise = fetch(
   "https://rentwheels-server-nine.vercel.app/featured-cars"
 ).then((res) => res.json());
+
 const Home = () => {
   return (
     <div>

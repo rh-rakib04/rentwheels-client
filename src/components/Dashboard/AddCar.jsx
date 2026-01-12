@@ -1,23 +1,37 @@
-import React, { use } from "react";
+import React, { useContext } from "react";
+import { motion } from "framer-motion";
+import {
+  FaCarSide,
+  FaPlus,
+  FaImage,
+  FaTag,
+  FaDollarSign,
+  FaMapMarkerAlt,
+  FaGasPump,
+  FaCogs,
+  FaAlignLeft,
+} from "react-icons/fa";
 import { AuthContext } from "../../context/AuthContext";
 import toast from "react-hot-toast";
 
 const AddCar = () => {
-  const { user, darkMode } = use(AuthContext); // Get darkMode from context
+  const { user, darkMode } = useContext(AuthContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const form = e.target;
     const formData = {
-      name: form.name.value,
+      name: form.name.value, // Matched key to your MyListings component
       image: form.image.value,
       category: form.category.value,
-      rentPrice: form.rentPrice.value,
+      rentPrice: form.rentPrice.value, // Matched key to your MyListings component
       location: form.location.value,
-      fuelType: form.fuelType.value,
+      fuel: form.fuelType.value,
       transmission: form.transmission.value,
       description: form.description.value,
-      addBy: user.email,
+      providerEmail: user.email,
+      providerName: user.displayName,
+      status: "Available",
     };
 
     fetch("https://rentwheels-server-nine.vercel.app/cars", {
@@ -27,232 +41,193 @@ const AddCar = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (data.insertedId || data.success) {
-          toast.success("✅ Car added successfully!");
+        if (data.insertedId) {
+          toast.success("Unit Registered to Fleet", {
+            style: {
+              background: darkMode ? "#111" : "#fff",
+              color: darkMode ? "#fff" : "#000",
+              borderRadius: "1rem",
+              border: darkMode ? "1px solid #333" : "1px solid #eee",
+            },
+          });
           form.reset();
-        } else {
-          toast.error("❌ Failed to add car. Try again!");
         }
       })
-      .catch((err) => console.error(err));
+      .catch(() => toast.error("Registration Failed"));
   };
 
   return (
-    <div
-      className={`w-11/12 md:w-8/12 lg:w-6/12 mx-auto my-12 p-8 rounded-2xl shadow-lg border transition-all duration-300 ${
-        darkMode
-          ? "bg-slate-900 border-slate-700 text-white"
-          : "bg-white border-slate-200 text-gray-900"
-      }`}
-    >
-      <h1
-        data-aos="fade-up"
-        className={`text-3xl font-bold text-center mb-6 ${
-          darkMode ? "text-yellow-400" : "text-yellow-500"
-        }`}
+    <div className="max-w-6xl mx-auto pb-20">
+      {/* 🏎️ SECTION HEADER */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-zinc-500/10 pb-8"
       >
-        Add a New Car
-      </h1>
-
-      <form data-aos="fade-up" onSubmit={handleSubmit} className="space-y-5">
-        {/* Car Name */}
         <div>
-          <label
-            className={`block mb-1 font-medium ${
-              darkMode ? "text-slate-300" : "text-slate-700"
-            }`}
-          >
-            Car Name
-          </label>
-          <input
-            type="text"
-            name="name"
-            placeholder="Enter car name"
-            required
-            className={`w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none transition-all duration-300 ${
-              darkMode
-                ? "border-slate-600 bg-slate-800 text-white focus:ring-yellow-400"
-                : "border-slate-300 bg-slate-50 text-slate-800 focus:ring-yellow-500"
-            }`}
-          />
+          <div className="flex items-center gap-3 mb-2">
+            <div className="w-2 h-8 bg-yellow-500 rounded-full" />
+            <h1 className="text-4xl font-black italic uppercase tracking-tighter ">
+              Unit <span className="text-yellow-500">Registration</span>
+            </h1>
+          </div>
+          <p className="text-zinc-500 text-[10px] font-black uppercase tracking-[0.3em] ml-5">
+            Onboard new assets to the RentWheels global fleet
+          </p>
+        </div>
+        <div className="bg-zinc-500/5 px-6 py-3 rounded-2xl border border-zinc-500/10 hidden md:block">
+          <p className="text-[9px] font-black uppercase text-zinc-500 tracking-widest">
+            Operator Identity
+          </p>
+          <p className="text-xs font-bold italic">{user?.email}</p>
+        </div>
+      </motion.div>
+
+      {/* 🛠️ REGISTRATION FORM */}
+      <motion.form
+        onSubmit={handleSubmit}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+        className="grid grid-cols-1 lg:grid-cols-3 gap-8"
+      >
+        {/* LEFT COLUMN: CORE INFO */}
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-zinc-500/5 border border-zinc-500/10 rounded-[2.5rem] p-8 md:p-10 space-y-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <InputGroup
+                label="Vehicle Name"
+                name="name"
+                icon={<FaCarSide />}
+                placeholder="e.g. Tesla Model S Plaid"
+              />
+              <InputGroup
+                label="Asset Image URL"
+                name="image"
+                icon={<FaImage />}
+                placeholder="https://image-cloud.com/unit-01.jpg"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <SelectGroup label="Category" name="category" icon={<FaTag />}>
+                <option value="SUV">SUV</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Sports">Sports</option>
+                <option value="Electric">Electric</option>
+              </SelectGroup>
+              <InputGroup
+                label="Daily Rate (USD)"
+                name="rentPrice"
+                type="number"
+                icon={<FaDollarSign />}
+                placeholder="150"
+              />
+              <InputGroup
+                label="Deployment Base"
+                name="location"
+                icon={<FaMapMarkerAlt />}
+                placeholder="Dubai, UAE"
+              />
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+                <FaAlignLeft className="text-yellow-500" /> Unit Description &
+                Specs
+              </label>
+              <textarea
+                name="description"
+                required
+                rows="5"
+                placeholder="Enter technical details, features, and rental terms..."
+                className="w-full bg-white dark:bg-black border border-zinc-500/20 rounded-3xl p-5 text-sm dark:text-white focus:ring-4 focus:ring-yellow-500/10 focus:border-yellow-500 outline-none transition-all resize-none italic"
+              />
+            </div>
+          </div>
         </div>
 
-        {/* Image URL */}
-        <div>
-          <label
-            className={`block mb-1 font-medium ${
-              darkMode ? "text-slate-300" : "text-slate-700"
-            }`}
-          >
-            Image URL
-          </label>
-          <input
-            type="text"
-            name="image"
-            placeholder="https://example.com/car.jpg"
-            required
-            className={`w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none transition-all duration-300 ${
-              darkMode
-                ? "border-slate-600 bg-slate-800 text-white focus:ring-yellow-400"
-                : "border-slate-300 bg-slate-50 text-slate-800 focus:ring-yellow-500"
-            }`}
-          />
-        </div>
+        {/* RIGHT COLUMN: TECHNICAL SPECS & SUBMIT */}
+        <div className="space-y-6">
+          <div className="bg-zinc-500/5 border border-zinc-500/10 rounded-[2.5rem] p-8 space-y-8">
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-yellow-500">
+              Mechanical Specs
+            </p>
 
-        {/* Category */}
-        <div>
-          <label
-            className={`block mb-1 font-medium ${
-              darkMode ? "text-slate-300" : "text-slate-700"
-            }`}
-          >
-            Category
-          </label>
-          <select
-            name="category"
-            required
-            className={`w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none transition-all duration-300 ${
-              darkMode
-                ? "border-slate-600 bg-slate-800 text-white focus:ring-yellow-400"
-                : "border-slate-300 bg-slate-50 text-slate-800 focus:ring-yellow-500"
-            }`}
-          >
-            <option value="">Select category</option>
-            <option value="SUV">SUV</option>
-            <option value="Sedan">Sedan</option>
-            <option value="Electric">Electric</option>
-            <option value="Sports">Sports</option>
-          </select>
-        </div>
-
-        {/* Rent Price */}
-        <div>
-          <label
-            className={`block mb-1 font-medium ${
-              darkMode ? "text-slate-300" : "text-slate-700"
-            }`}
-          >
-            Rent Price (Per Day)
-          </label>
-          <input
-            type="number"
-            name="rentPrice"
-            placeholder="e.g., 80"
-            required
-            className={`w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none transition-all duration-300 ${
-              darkMode
-                ? "border-slate-600 bg-slate-800 text-white focus:ring-yellow-400"
-                : "border-slate-300 bg-slate-50 text-slate-800 focus:ring-yellow-500"
-            }`}
-          />
-        </div>
-
-        {/* Location */}
-        <div>
-          <label
-            className={`block mb-1 font-medium ${
-              darkMode ? "text-slate-300" : "text-slate-700"
-            }`}
-          >
-            Location
-          </label>
-          <input
-            type="text"
-            name="location"
-            placeholder="e.g., Chattogram, Bangladesh"
-            required
-            className={`w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none transition-all duration-300 ${
-              darkMode
-                ? "border-slate-600 bg-slate-800 text-white focus:ring-yellow-400"
-                : "border-slate-300 bg-slate-50 text-slate-800 focus:ring-yellow-500"
-            }`}
-          />
-        </div>
-
-        {/* Fuel & Transmission */}
-        <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
-            <label
-              className={`block mb-1 font-medium ${
-                darkMode ? "text-slate-300" : "text-slate-700"
-              }`}
-            >
-              Fuel Type
-            </label>
-            <select
+            <SelectGroup
+              label="Fuel Logic"
               name="fuelType"
-              required
-              className={`w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none transition-all duration-300 ${
-                darkMode
-                  ? "border-slate-600 bg-slate-800 text-white focus:ring-yellow-400"
-                  : "border-slate-300 bg-slate-50 text-slate-800 focus:ring-yellow-500"
-              }`}
+              icon={<FaGasPump />}
             >
-              <option value="">Select fuel type</option>
+              <option value="Electric">Electric</option>
+              <option value="Hybrid">Hybrid</option>
               <option value="Petrol">Petrol</option>
               <option value="Diesel">Diesel</option>
-              <option value="Electric">Electric</option>
-            </select>
-          </div>
+            </SelectGroup>
 
-          <div className="flex-1">
-            <label
-              className={`block mb-1 font-medium ${
-                darkMode ? "text-slate-300" : "text-slate-700"
-              }`}
-            >
-              Transmission
-            </label>
-            <select
+            <SelectGroup
+              label="Transmission"
               name="transmission"
-              required
-              className={`w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none transition-all duration-300 ${
-                darkMode
-                  ? "border-slate-600 bg-slate-800 text-white focus:ring-yellow-400"
-                  : "border-slate-300 bg-slate-50 text-slate-800 focus:ring-yellow-500"
-              }`}
+              icon={<FaCogs />}
             >
-              <option value="">Select transmission</option>
-              <option value="Manual">Manual</option>
               <option value="Automatic">Automatic</option>
-            </select>
+              <option value="Manual">Manual</option>
+              <option value="Semi-Auto">Semi-Auto</option>
+            </SelectGroup>
+
+            <div className="p-5 bg-yellow-500/5 border border-yellow-500/10 rounded-3xl">
+              <p className="text-[9px] font-black uppercase text-yellow-600 mb-2">
+                Notice
+              </p>
+              <p className="text-[11px] text-zinc-500 italic leading-relaxed">
+                By registering this unit, you confirm it has passed all safety
+                inspections and is ready for immediate deployment.
+              </p>
+            </div>
           </div>
-        </div>
 
-        {/* Description */}
-        <div>
-          <label
-            className={`block mb-1 font-medium ${
-              darkMode ? "text-slate-300" : "text-slate-700"
-            }`}
-          >
-            Description
-          </label>
-          <textarea
-            name="description"
-            placeholder="Write short description..."
-            required
-            rows="3"
-            className={`w-full px-4 py-2 rounded-lg border focus:ring-2 outline-none transition-all duration-300 ${
-              darkMode
-                ? "border-slate-600 bg-slate-800 text-white focus:ring-yellow-400"
-                : "border-slate-300 bg-slate-50 text-slate-800 focus:ring-yellow-500"
-            }`}
-          />
-        </div>
-
-        {/* Submit Button */}
-        <div className="text-center">
-          <button
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             type="submit"
-            className="w-full py-2 bg-yellow-500 hover:bg-yellow-400 text-white font-semibold rounded-lg transition-all duration-300 shadow-md"
+            className="w-full py-6 bg-yellow-500 text-black rounded-[2rem] font-black uppercase italic tracking-tighter text-xl shadow-xl shadow-yellow-500/20 flex items-center justify-center gap-3"
           >
-            Add Car
-          </button>
+            <FaPlus size={18} /> Complete Registration
+          </motion.button>
         </div>
-      </form>
+      </motion.form>
     </div>
   );
 };
+
+/* --- HELPER COMPONENTS --- */
+
+const InputGroup = ({ label, icon, ...props }) => (
+  <div className="space-y-3">
+    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+      <span className="text-yellow-500">{icon}</span> {label}
+    </label>
+    <input
+      required
+      {...props}
+      className="w-full bg-white dark:bg-black border border-zinc-500/20 rounded-2xl px-5 py-4 text-sm dark:text-white font-bold focus:ring-4 focus:ring-yellow-500/10 focus:border-yellow-500 outline-none transition-all placeholder:text-zinc-600"
+    />
+  </div>
+);
+
+const SelectGroup = ({ label, icon, children, ...props }) => (
+  <div className="space-y-3">
+    <label className="text-[10px] font-black uppercase tracking-widest text-zinc-500 flex items-center gap-2">
+      <span className="text-yellow-500">{icon}</span> {label}
+    </label>
+    <select
+      required
+      {...props}
+      className="w-full bg-white dark:bg-black border border-zinc-500/20 rounded-2xl px-5 py-4 text-sm dark:text-white font-bold focus:ring-4 focus:ring-yellow-500/10 focus:border-yellow-500 outline-none transition-all appearance-none cursor-pointer"
+    >
+      {children}
+    </select>
+  </div>
+);
 
 export default AddCar;

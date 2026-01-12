@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import AOS from "aos";
@@ -11,8 +11,8 @@ import Footer from "../components/Footer";
 import CarIntroLottie from "../components/CarIntroLottie";
 
 const MainLayout = () => {
-  // Accessing Auth Context (React 19 style)
-  const auth = use(AuthContext);
+  // Accessing Auth Context
+  const auth = useContext(AuthContext);
   const darkMode = auth?.darkMode;
   
   const location = useLocation();
@@ -43,7 +43,6 @@ const MainLayout = () => {
       />
 
       {/* 2. The Main Website Content */}
-      {/* We keep the content hidden until loading is done to prevent "flashing" background items */}
       <AnimatePresence>
         {!isAppLoading && (
           <motion.div

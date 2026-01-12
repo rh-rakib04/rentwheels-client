@@ -13,7 +13,7 @@ const FeaturedCars = ({ featuredCarsPromise }) => {
   );
 
   return (
-    <section className="relative py-24  overflow-hidden">
+    <section className="relative py-10  overflow-hidden">
       {/* Cinematic Background Accents */}
       <div className="absolute top-1/2 left-0 w-72 h-72 bg-yellow-500/10 blur-[120px] rounded-full pointer-events-none" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-yellow-500/5 blur-[150px] rounded-full pointer-events-none" />

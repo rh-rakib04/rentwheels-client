@@ -47,7 +47,7 @@ const TrustStats = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[300px] bg-yellow-500/5 dark:bg-yellow-400/5 blur-[120px] rounded-full -z-10" />
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 lg:gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 lg:gap-8">
           {stats.map((stat, i) => (
             <motion.div
               key={stat.id}
@@ -66,7 +66,7 @@ const TrustStats = () => {
                 </div>
 
                 {/* Animated Stat Value */}
-                <h3 className="text-3xl lg:text-4xl font-black italic uppercase tracking-tighter text-slate-900 dark:text-white leading-none mb-2">
+                <h3 className="text-2xl md:text-3xl lg:text-4xl font-black italic uppercase tracking-tighter text-slate-900 dark:text-white leading-none mb-2">
                   {inView ? (
                     <CountUp
                       start={0}

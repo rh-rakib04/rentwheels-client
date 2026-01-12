@@ -11,6 +11,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../firebase/firebase.config";
 import { AuthContext } from "./AuthContext";
+import { set } from "react-hook-form";
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -87,12 +88,15 @@ const AuthProvider = ({ children }) => {
     signOutUser,
     passwordReset,
     user,
+    setUser,
     loading,
     darkMode,
     toggleDarkMode,
   };
 
-  return <AuthContext value={authInfo}>{children}</AuthContext>;
+  return (
+    <AuthContext.Provider value={authInfo}>{children}</AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;
